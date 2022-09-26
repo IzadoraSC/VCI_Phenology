@@ -36,58 +36,11 @@ if (!file.exists(paste0(dataPath,'/data_NDVI')))
 if (!file.exists(paste0(dataPath,'/data_Pixel_Reliability')))
   dir.create(paste0(dataPath,'/data_Pixel_Reliability'))
 
+# In both folders for each day of the year (DOY) create one subfolder. 
+# The name of each folder must start with “DOY_”, e.g. DOY_033.
+
 pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_NDVI"
 pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_Pixel_Reliability"
-# Create output folders for masked NDVI and VCI.
-if (!file.exists(paste0(pathData,'/DOY_001')))
-  dir.create(paste0(pathData,'/DOY_001'))
-if (!file.exists(paste0(pathData,'/DOY_017')))
-  dir.create(paste0(pathData,'/DOY_017'))
-if (!file.exists(paste0(pathData,'/DOY_033')))
-  dir.create(paste0(pathData,'/DOY_033'))
-if (!file.exists(paste0(pathData,'/DOY_049')))
-  dir.create(paste0(pathData,'/DOY_049'))
-if (!file.exists(paste0(pathData,'/DOY_049')))
-  dir.create(paste0(pathData,'/DOY_049'))
-if (!file.exists(paste0(pathData,'/DOY_065')))
-  dir.create(paste0(pathData,'/DOY_065'))
-if (!file.exists(paste0(pathData,'/DOY_081')))
-  dir.create(paste0(pathData,'/DOY_081'))
-if (!file.exists(paste0(pathData,'/DOY_097')))
-  dir.create(paste0(pathData,'/DOY_097'))
-if (!file.exists(paste0(pathData,'/DOY_113')))
-  dir.create(paste0(pathData,'/DOY_113'))
-if (!file.exists(paste0(pathData,'/DOY_129')))
-  dir.create(paste0(pathData,'/DOY_129'))
-if (!file.exists(paste0(pathData,'/DOY_145')))
-  dir.create(paste0(pathData,'/DOY_145'))
-if (!file.exists(paste0(pathData,'/DOY_161')))
-  dir.create(paste0(pathData,'/DOY_161'))
-if (!file.exists(paste0(pathData,'/DOY_177')))
-  dir.create(paste0(pathData,'/DOY_177'))
-if (!file.exists(paste0(pathData,'/DOY_193')))
-  dir.create(paste0(pathData,'/DOY_193'))
-if (!file.exists(paste0(pathData,'/DOY_209')))
-  dir.create(paste0(pathData,'/DOY_209'))
-if (!file.exists(paste0(pathData,'/DOY_225')))
-  dir.create(paste0(pathData,'/DOY_225'))
-if (!file.exists(paste0(pathData,'/DOY_241')))
-  dir.create(paste0(pathData,'/DOY_241'))
-if (!file.exists(paste0(pathData,'/DOY_257')))
-  dir.create(paste0(pathData,'/DOY_257'))
-if (!file.exists(paste0(pathData,'/DOY_273')))
-  dir.create(paste0(pathData,'/DOY_273'))
-if (!file.exists(paste0(pathData,'/DOY_289')))
-  dir.create(paste0(pathData,'/DOY_289'))
-if (!file.exists(paste0(pathData,'/DOY_305')))
-  dir.create(paste0(pathData,'/DOY_305'))
-if (!file.exists(paste0(pathData,'/DOY_321')))
-  dir.create(paste0(pathData,'/DOY_321'))
-if (!file.exists(paste0(pathData,'/DOY_337')))
-  dir.create(paste0(pathData,'/DOY_337'))
-if (!file.exists(paste0(pathData,'/DOY_353')))
-  dir.create(paste0(pathData,'/DOY_353'))
-
 
 if (!file.exists(paste0(pathData,'/DOY_001')))
   dir.create(paste0(pathData,'/DOY_001'))
@@ -149,32 +102,35 @@ plot(border)
 
 #enter link to the folder where you have stored the MODIS EVI data
 
-pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/MOD13Q1_2000-2022"
-# mydir <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI/DOY_001"
+pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_NDVI"
 dlist <- dir(pathData,pattern="DOY")
 
 # enter link to the folder where you have stored the MODIS Pixel Reliability data
 
-pathData_c <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/Data_Pixel_Reliability"  
+pathData_c <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_Pixel_Reliability"  
 dlist_c <- dir(pathData_c,pattern="DOY")
-
+dir(pathData_c)
+plot(pathData[2])
 
 # List all NDVI rasters (NDVI) and their corresponding pixel reliability 
 # data (NDVIqc).
-NDVI <- list.files(path="C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI/DOY_001", pattern='.tif$', recursive=F, ignore.case=T, 
+
+NDVI <- list.files(path="C:/Users/user/Documents/GitHub/VCI_Phenology/data/MOD13Q1_2000-2022",
+                   pattern='.tif$', recursive=F, ignore.case=T, 
                    full.names=T)
-# NDVIqc <- list.files(path=pathData_c, pattern='.tif$', recursive=F, ignore.case=T, 
-#                      full.names=T)
+
+NDVIqc <- list.files(path= "C:/Users/user/Documents/GitHub/VCI_Phenology/data/px_reliability",
+                     pattern='.tif$', recursive=F, ignore.case=T,
+                     full.names=T)
+
 # #Showing an example of the downloaded NDVI data
 exNDVI <- raster(NDVI[1])
 plot(exNDVI)
-myExtent <- readOGR(exNDVI, border)
-myExtent <- ?spTRansform(exNDVI, CRS(proj4string(exNDVI)))
 
 # 
 # #Showing an example of the corresponding Pixel Reliability
-# exNDVIqc <- raster(NDVIqc[1])
-# plot(exNDVIqc)
+exNDVIqc <- raster(NDVIqc[1])
+plot(exNDVIqc)
 
 
 #file.rename(list.files(), paste(as.Date(substr(list.files(),35,41),"%Y%j"),".tif", sep=""))
@@ -207,58 +163,6 @@ for (i in 1:nrow(li)){
     })
   }
 }
-
-
-## Criando pasta
-# Create output folders for masked NDVI and VCI.
-if (!file.exists(paste0(pathData,'/DOY_001')))
-  dir.create(paste0(pathData,'/DOY_001'))
-if (!file.exists(paste0(pathData,'/DOY_017')))
-  dir.create(paste0(pathData,'/DOY_017'))
-if (!file.exists(paste0(pathData,'/DOY_033')))
-  dir.create(paste0(pathData,'/DOY_033'))
-if (!file.exists(paste0(pathData,'/DOY_049')))
-  dir.create(paste0(pathData,'/DOY_049'))
-if (!file.exists(paste0(pathData,'/DOY_049')))
-  dir.create(paste0(pathData,'/DOY_049'))
-if (!file.exists(paste0(pathData,'/DOY_065')))
-  dir.create(paste0(pathData,'/DOY_065'))
-if (!file.exists(paste0(pathData,'/DOY_081')))
-  dir.create(paste0(pathData,'/DOY_081'))
-if (!file.exists(paste0(pathData,'/DOY_097')))
-  dir.create(paste0(pathData,'/DOY_097'))
-if (!file.exists(paste0(pathData,'/DOY_113')))
-  dir.create(paste0(pathData,'/DOY_113'))
-if (!file.exists(paste0(pathData,'/DOY_129')))
-  dir.create(paste0(pathData,'/DOY_129'))
-if (!file.exists(paste0(pathData,'/DOY_145')))
-  dir.create(paste0(pathData,'/DOY_145'))
-if (!file.exists(paste0(pathData,'/DOY_161')))
-  dir.create(paste0(pathData,'/DOY_161'))
-if (!file.exists(paste0(pathData,'/DOY_177')))
-  dir.create(paste0(pathData,'/DOY_177'))
-if (!file.exists(paste0(pathData,'/DOY_193')))
-  dir.create(paste0(pathData,'/DOY_193'))
-if (!file.exists(paste0(pathData,'/DOY_209')))
-  dir.create(paste0(pathData,'/DOY_209'))
-if (!file.exists(paste0(pathData,'/DOY_225')))
-  dir.create(paste0(pathData,'/DOY_225'))
-if (!file.exists(paste0(pathData,'/DOY_241')))
-  dir.create(paste0(pathData,'/DOY_241'))
-if (!file.exists(paste0(pathData,'/DOY_257')))
-  dir.create(paste0(pathData,'/DOY_257'))
-if (!file.exists(paste0(pathData,'/DOY_273')))
-  dir.create(paste0(pathData,'/DOY_273'))
-if (!file.exists(paste0(pathData,'/DOY_289')))
-  dir.create(paste0(pathData,'/DOY_289'))
-if (!file.exists(paste0(pathData,'/DOY_305')))
-  dir.create(paste0(pathData,'/DOY_305'))
-if (!file.exists(paste0(pathData,'/DOY_321')))
-  dir.create(paste0(pathData,'/DOY_321'))
-if (!file.exists(paste0(pathData,'/DOY_337')))
-  dir.create(paste0(pathData,'/DOY_337'))
-if (!file.exists(paste0(pathData,'/DOY_353')))
-  dir.create(paste0(pathData,'/DOY_353'))
 
 
 
