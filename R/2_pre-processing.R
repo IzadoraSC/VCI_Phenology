@@ -19,27 +19,137 @@ library(stringr)
   # ponderada de fenologia do Índice de Vegetação da Diferença Normalizada (NDVI)
   # e do Índice de Vegetação Condicionada (VCI).
 
-## 4.2 Scrip 2: Pre-processing;
-getwd()
+## After Download MOD13Q1 data at https://lpdaacsvc.cr.usgs.gov/appeears/
 
+## 4.2 Scrip 2: Pre-processing;
+
+# Create two folders, where you will store all data, one for the NDVI files 
+# and one for the Pixel Reliability files, e.g. C:/Data_EVI and C:/Data_Pixel_Reliability.
 
 # dir mean
 dataPath <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data"
 dir(dataPath)
+
+# Create output folders for masked NDVI and VCI.
+if (!file.exists(paste0(dataPath,'/data_NDVI')))
+  dir.create(paste0(dataPath,'/data_NDVI'))
+if (!file.exists(paste0(dataPath,'/data_Pixel_Reliability')))
+  dir.create(paste0(dataPath,'/data_Pixel_Reliability'))
+
+pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_NDVI"
+pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_Pixel_Reliability"
+# Create output folders for masked NDVI and VCI.
+if (!file.exists(paste0(pathData,'/DOY_001')))
+  dir.create(paste0(pathData,'/DOY_001'))
+if (!file.exists(paste0(pathData,'/DOY_017')))
+  dir.create(paste0(pathData,'/DOY_017'))
+if (!file.exists(paste0(pathData,'/DOY_033')))
+  dir.create(paste0(pathData,'/DOY_033'))
+if (!file.exists(paste0(pathData,'/DOY_049')))
+  dir.create(paste0(pathData,'/DOY_049'))
+if (!file.exists(paste0(pathData,'/DOY_049')))
+  dir.create(paste0(pathData,'/DOY_049'))
+if (!file.exists(paste0(pathData,'/DOY_065')))
+  dir.create(paste0(pathData,'/DOY_065'))
+if (!file.exists(paste0(pathData,'/DOY_081')))
+  dir.create(paste0(pathData,'/DOY_081'))
+if (!file.exists(paste0(pathData,'/DOY_097')))
+  dir.create(paste0(pathData,'/DOY_097'))
+if (!file.exists(paste0(pathData,'/DOY_113')))
+  dir.create(paste0(pathData,'/DOY_113'))
+if (!file.exists(paste0(pathData,'/DOY_129')))
+  dir.create(paste0(pathData,'/DOY_129'))
+if (!file.exists(paste0(pathData,'/DOY_145')))
+  dir.create(paste0(pathData,'/DOY_145'))
+if (!file.exists(paste0(pathData,'/DOY_161')))
+  dir.create(paste0(pathData,'/DOY_161'))
+if (!file.exists(paste0(pathData,'/DOY_177')))
+  dir.create(paste0(pathData,'/DOY_177'))
+if (!file.exists(paste0(pathData,'/DOY_193')))
+  dir.create(paste0(pathData,'/DOY_193'))
+if (!file.exists(paste0(pathData,'/DOY_209')))
+  dir.create(paste0(pathData,'/DOY_209'))
+if (!file.exists(paste0(pathData,'/DOY_225')))
+  dir.create(paste0(pathData,'/DOY_225'))
+if (!file.exists(paste0(pathData,'/DOY_241')))
+  dir.create(paste0(pathData,'/DOY_241'))
+if (!file.exists(paste0(pathData,'/DOY_257')))
+  dir.create(paste0(pathData,'/DOY_257'))
+if (!file.exists(paste0(pathData,'/DOY_273')))
+  dir.create(paste0(pathData,'/DOY_273'))
+if (!file.exists(paste0(pathData,'/DOY_289')))
+  dir.create(paste0(pathData,'/DOY_289'))
+if (!file.exists(paste0(pathData,'/DOY_305')))
+  dir.create(paste0(pathData,'/DOY_305'))
+if (!file.exists(paste0(pathData,'/DOY_321')))
+  dir.create(paste0(pathData,'/DOY_321'))
+if (!file.exists(paste0(pathData,'/DOY_337')))
+  dir.create(paste0(pathData,'/DOY_337'))
+if (!file.exists(paste0(pathData,'/DOY_353')))
+  dir.create(paste0(pathData,'/DOY_353'))
+
+
+if (!file.exists(paste0(pathData,'/DOY_001')))
+  dir.create(paste0(pathData,'/DOY_001'))
+if (!file.exists(paste0(pathData,'/DOY_017')))
+  dir.create(paste0(pathData,'/DOY_017'))
+if (!file.exists(paste0(pathData,'/DOY_033')))
+  dir.create(paste0(pathData,'/DOY_033'))
+if (!file.exists(paste0(pathData,'/DOY_049')))
+  dir.create(paste0(pathData,'/DOY_049'))
+if (!file.exists(paste0(pathData,'/DOY_065')))
+  dir.create(paste0(pathData,'/DOY_065'))
+if (!file.exists(paste0(pathData,'/DOY_081')))
+  dir.create(paste0(pathData,'/DOY_081'))
+if (!file.exists(paste0(pathData,'/DOY_097')))
+  dir.create(paste0(pathData,'/DOY_097'))
+if (!file.exists(paste0(pathData,'/DOY_113')))
+  dir.create(paste0(pathData,'/DOY_113'))
+if (!file.exists(paste0(pathData,'/DOY_129')))
+  dir.create(paste0(pathData,'/DOY_129'))
+if (!file.exists(paste0(pathData,'/DOY_145')))
+  dir.create(paste0(pathData,'/DOY_145'))
+if (!file.exists(paste0(pathData,'/DOY_161')))
+  dir.create(paste0(pathData,'/DOY_161'))
+if (!file.exists(paste0(pathData,'/DOY_177')))
+  dir.create(paste0(pathData,'/DOY_177'))
+if (!file.exists(paste0(pathData,'/DOY_193')))
+  dir.create(paste0(pathData,'/DOY_193'))
+if (!file.exists(paste0(pathData,'/DOY_209')))
+  dir.create(paste0(pathData,'/DOY_209'))
+if (!file.exists(paste0(pathData,'/DOY_225')))
+  dir.create(paste0(pathData,'/DOY_225'))
+if (!file.exists(paste0(pathData,'/DOY_241')))
+  dir.create(paste0(pathData,'/DOY_241'))
+if (!file.exists(paste0(pathData,'/DOY_257')))
+dir.create(paste0(pathData,'/DOY_257'))
+if (!file.exists(paste0(pathData,'/DOY_273')))
+dir.create(paste0(pathData,'/DOY_273'))
+if (!file.exists(paste0(pathData,'/DOY_289')))
+  dir.create(paste0(pathData,'/DOY_289'))
+if (!file.exists(paste0(pathData,'/DOY_305')))
+  dir.create(paste0(pathData,'/DOY_305'))
+if (!file.exists(paste0(pathData,'/DOY_321')))
+  dir.create(paste0(pathData,'/DOY_321'))
+if (!file.exists(paste0(pathData,'/DOY_337')))
+  dir.create(paste0(pathData,'/DOY_337'))
+if (!file.exists(paste0(pathData,'/DOY_353')))
+  dir.create(paste0(pathData,'/DOY_353'))
+
+
 #insert link to the shapefile with the country borders
 
-border <- readOGR(dsn = path.expand("C:/Users/user/Documents/GitHub/VCI_Phenology/data/shp"),
+border <- readOGR(dsn = path.expand("C:/Users/user/Documents/GitHub/VCI_Phenology/data/shapefile"),
                   layer = 'ret_env_modis')
 
 plot(border)
-str(border)
-
-extent(border)
-extent(exNDVI)
+# str(border)
+# extent(border)
+# extent(exNDVI)
 
 #enter link to the folder where you have stored the MODIS EVI data
 
-pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_NDVI"
+pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/MOD13Q1_2000-2022"
 # mydir <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI/DOY_001"
 dlist <- dir(pathData,pattern="DOY")
 
