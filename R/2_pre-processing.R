@@ -127,10 +127,25 @@ NDVIqc <- list.files(path= "C:/Users/user/Documents/GitHub/VCI_Phenology/data/px
 exNDVI <- raster(NDVI[1])
 plot(exNDVI)
 
-# 
 # #Showing an example of the corresponding Pixel Reliability
 exNDVIqc <- raster(NDVIqc[1])
 plot(exNDVIqc)
+
+
+#enter the links to the folder where you want to store the resulting .jpg-images and .tif-files.
+
+if (!file.exists(paste0(dataPath,'/VCI_Maps_CMNP_jpg')))
+  dir.create(paste0(dataPath,'/VCI_Maps_CMNP_jpg'))
+
+path_jpg <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/VCI_Maps_CMNP_jpg"  
+path_tif <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/VCI_Maps_CMNP_jpg"
+
+# Creating a progress bar in the Console, wich ends at the end of the loop. The progress bar
+# looks like this:
+
+pb <- txtProgressBar (min=0, max=length(dlist), style=1)
+setTxtProgressBar (pb, 0)
+
 
 
 #file.rename(list.files(), paste(as.Date(substr(list.files(),35,41),"%Y%j"),".tif", sep=""))
@@ -203,9 +218,20 @@ for (i in 1:nrow(li)){
 
 
 
-
-
-
+## Move Files
+# 
+# # list files to be move
+# my_files <- list.files(path="C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI/DOY_001", pattern='.tif$', recursive=F, ignore.case=T, 
+#                        full.names=T)
+# 
+# # custom function
+# my_function <- function(x){
+#   file.rename( from = file.path("yourpath/folder1", x) ,
+#                to = file.path("yourpath/folder3", x) )
+# }
+# 
+# # apply the function to all files
+# lapply(names, my_function)
 
 ########################
 #AnalysisPeriod <- c(2000, 2022)
@@ -221,7 +247,7 @@ for (i in 1:nrow(li)){
 
 #Starting VCI processing
 # List all NDVI rasters (NDVIrasterData) and their corresponding pixel reliability 
-  # data (NDVIqc).
+# data (NDVIqc).
 # NDVIrasterData <- rasterData[grepl('NDVI',basename(rasterData))]
 # NDVIqc <- rasterData[grepl('pixel_reliability',basename(rasterData))]
 # 
@@ -247,4 +273,8 @@ for (i in 1:nrow(li)){
 # all_modis_bands_pre_br <- brick(all_modis_bands_pre_st)
 
 ########################
+
+
+
+
 
