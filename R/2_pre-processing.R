@@ -20,14 +20,15 @@ library(stringr)
   # e do Índice de Vegetação Condicionada (VCI).
 
 ## 4.2 Scrip 2: Pre-processing;
+getwd()
 
 
 # dir mean
-dataPath <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data"
-
+dataPath <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data"
+dir(dataPath)
 #insert link to the shapefile with the country borders
 
-border <- readOGR(dsn = path.expand("C:/Users/user/Documents/GitHub/timesat_cmnp/data/shp"),
+border <- readOGR(dsn = path.expand("C:/Users/user/Documents/GitHub/VCI_Phenology/data/shp"),
                   layer = 'ret_env_modis')
 
 plot(border)
@@ -38,7 +39,7 @@ extent(exNDVI)
 
 #enter link to the folder where you have stored the MODIS EVI data
 
-pathData <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI"
+pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_NDVI"
 # mydir <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI/DOY_001"
 dlist <- dir(pathData,pattern="DOY")
 
@@ -107,7 +108,7 @@ if (!file.exists(paste0(pathData,'/DOY_017')))
 if (!file.exists(paste0(pathData,'/DOY_033')))
   dir.create(paste0(pathData,'/DOY_033'))
 if (!file.exists(paste0(pathData,'/DOY_049')))
-  dir.create(paste0(pathData,'/DOY_033'))
+  dir.create(paste0(pathData,'/DOY_049'))
 if (!file.exists(paste0(pathData,'/DOY_049')))
   dir.create(paste0(pathData,'/DOY_049'))
 if (!file.exists(paste0(pathData,'/DOY_065')))
