@@ -27,7 +27,8 @@ library(stringr)
 # and one for the Pixel Reliability files, e.g. C:/Data_EVI and C:/Data_Pixel_Reliability.
 
 # dir mean
-dataPath <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data"
+dataPath <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data"
+
 dir(dataPath)
 
 # Create output folders for masked NDVI and VCI.
@@ -39,8 +40,8 @@ if (!file.exists(paste0(dataPath,'/data_Pixel_Reliability')))
 # In both folders for each day of the year (DOY) create one subfolder. 
 # The name of each folder must start with “DOY_”, e.g. DOY_033.
 
-pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_NDVI"
-pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_Pixel_Reliability"
+pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_NDVI"
+pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_Pixel_Reliability"
 
 if (!file.exists(paste0(pathData,'/DOY_001')))
   dir.create(paste0(pathData,'/DOY_001'))
@@ -92,7 +93,7 @@ if (!file.exists(paste0(pathData,'/DOY_353')))
 
 #insert link to the shapefile with the country borders
 
-border <- readOGR(dsn = path.expand("C:/Users/user/Documents/GitHub/VCI_Phenology/data/shapefile"),
+border <- readOGR(dsn = path.expand("C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/shapefile"),
                   layer = 'ret_env_modis')
 
 plot(border)
@@ -100,14 +101,79 @@ plot(border)
 # extent(border)
 # extent(exNDVI)
 
+# Rename the files by addding a prefix following the pattern DOY_YYYY_, e.g. 033_2001 or 001_2005.
+# MOD13Q1.006__250m_16_days_NDVI_doy2000049_aid0001.tif  to  049_2000.tif
+# MOD13Q1.006__250m_16_days_pixel_reliability_doy2000049_aid0001.tif to 049_2000.tif
+
+pathData_d <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/MOD13Q1_2000-2022"
+
+li<-as.data.frame(list.files(path = pathData_d, pattern = ".tif|.TIF"))
+## conversao de dias julianos "%Y%j" para "%Y.%m.%d" and rename
+#li$nn<-paste0(substr(li[,1],1,34),format(as.Date(substr(li[,1],35,41), "%Y%j"),"%Y.%m.%d"),substr(li[,1],42,53))
+li$nn <- paste0(gsub(li[,1],1,substr(li[,1],39,41)), "_", substr(li[,1],35,53))
+for (i in 1:nrow(li)){
+  is.pattern = grep(li[i,1],li)
+  if (identical(is.pattern,integer(0)) == FALSE){
+    sapply(li[is.pattern],FUN=function(eachPath){ 
+      file.rename(from=eachPath,to= sub(pattern= li[i,1],replacement = li[i,2],eachPath))
+    })
+  }
+}
+
+#Conversao II
+li<-as.data.frame(list.files(path = pathData_d, pattern = ".tif|.TIF"))
+li$nn <- paste0(gsub(li[,1],1,substr(li[,1],1,8)), "_", substr(li[,1],20,23))
+
+for (i in 1:nrow(li)){
+  is.pattern = grep(li[i,1],li)
+  if (identical(is.pattern,integer(0)) == FALSE){
+    sapply(li[is.pattern],FUN=function(eachPath){ 
+      file.rename(from=eachPath,to= sub(pattern= li[i,1],replacement = li[i,2],eachPath))
+    })
+  }
+}
+
+# files Pixel Reliability
+pathData_e <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/px_reliability"
+
+li<-as.data.frame(list.files(path = pathData_e, pattern = ".tif|.TIF"))
+## conversao de dias julianos "%Y%j" para "%Y.%m.%d" and rename (Pixel Reliability)
+#li$nn<-paste0(substr(li[,1],1,34),format(as.Date(substr(li[,1],35,41), "%Y%j"),"%Y.%m.%d"),substr(li[,1],42,66))
+li$nn <- paste0(gsub(li[,1],1,substr(li[,1],52,54)), "_", substr(li[,1],48,66))
+for (i in 1:nrow(li)){
+  is.pattern = grep(li[i,1],li)
+  if (identical(is.pattern,integer(0)) == FALSE){
+    sapply(li[is.pattern],FUN=function(eachPath){ 
+      file.rename(from=eachPath,to= sub(pattern= li[i,1],replacement = li[i,2],eachPath))
+    })
+  }
+}
+
+#Conversao II
+li<-as.data.frame(list.files(path = pathData_e, pattern = ".tif|.TIF"))
+li$nn <- paste0(gsub(li[,1],1,substr(li[,1],1,8)), "_", substr(li[,1],20,23))
+
+for (i in 1:nrow(li)){
+  is.pattern = grep(li[i,1],li)
+  if (identical(is.pattern,integer(0)) == FALSE){
+    sapply(li[is.pattern],FUN=function(eachPath){ 
+      file.rename(from=eachPath,to= sub(pattern= li[i,1],replacement = li[i,2],eachPath))
+    })
+  }
+}
+
+
+## move files "DOY_YYYY.tif" to subfolders "DOY_YYYY"
+
+
 #enter link to the folder where you have stored the MODIS EVI data
 
-pathData <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_NDVI"
+pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_NDVI"
 dlist <- dir(pathData,pattern="DOY")
 
 # enter link to the folder where you have stored the MODIS Pixel Reliability data
 
-pathData_c <- "C:/Users/user/Documents/GitHub/VCI_Phenology/data/data_Pixel_Reliability"  
+pathData_c <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_Pixel_Reliability"  
 dlist_c <- dir(pathData_c,pattern="DOY")
 dir(pathData_c)
 plot(pathData[2])
@@ -152,78 +218,36 @@ setTxtProgressBar (pb, 0)
 #file.rename(list.files(), paste(as.Date(substr(list.files(),1,13),"%Y.%m.%d"), "%Y%j"),".tif", sep=""))
 
 
-## conversao de dias julianos "%Y%j" para "%Y.%m.%d" and rename
-
-li<-as.data.frame(list.files(pattern = ".tif|.TIF"))
-#li$nn<-paste0(substr(li[,1],1,34),format(as.Date(substr(li[,1],35,41), "%Y%j"),"%Y.%m.%d"),substr(li[,1],42,53))
-li$nn <- paste0(gsub(li[,1],1,substr(li[,1],39,41)), "_", substr(li[,1],35,53))
-for (i in 1:nrow(li)){
-  is.pattern = grep(li[i,1],li)
-  if (identical(is.pattern,integer(0)) == FALSE){
-    sapply(li[is.pattern],FUN=function(eachPath){ 
-      file.rename(from=eachPath,to= sub(pattern= li[i,1],replacement = li[i,2],eachPath))
-    })
-  }
-}
-
-#Conversao II
-li<-as.data.frame(list.files(pattern = ".tif|.TIF"))
-li$nn <- paste0(gsub(li[,1],1,substr(li[,1],1,8)), "_", substr(li[,1],20,23))
-
-for (i in 1:nrow(li)){
-  is.pattern = grep(li[i,1],li)
-  if (identical(is.pattern,integer(0)) == FALSE){
-    sapply(li[is.pattern],FUN=function(eachPath){ 
-      file.rename(from=eachPath,to= sub(pattern= li[i,1],replacement = li[i,2],eachPath))
-    })
-  }
-}
-
-
-
 # t4 <- "001_2001001_aid0001.tif"
 # t <- "MOD13Q1.006__250m_16_days_NDVI_doy2000049_aid0001.tif"
 # t <- "MOD13Q1.006__250m_16_days_pixel_reliability_doy2000081_aid0001.tif"
 # str_count(t4)
 # str_locate(t, 'o')
 
-## conversao de dias julianos "%Y%j" para "%Y.%m.%d" and rename (Pixel Reliability)
-setwd(pathData_c)
-
-li<-as.data.frame(list.files(path = pathData_c, pattern = ".tif|.TIF"))
-#li$nn<-paste0(substr(li[,1],1,34),format(as.Date(substr(li[,1],35,41), "%Y%j"),"%Y.%m.%d"),substr(li[,1],42,66))
-li$nn <- paste0(gsub(li[,1],1,substr(li[,1],52,54)), "_", substr(li[,1],48,66))
-for (i in 1:nrow(li)){
-  is.pattern = grep(li[i,1],li)
-  if (identical(is.pattern,integer(0)) == FALSE){
-    sapply(li[is.pattern],FUN=function(eachPath){ 
-      file.rename(from=eachPath,to= sub(pattern= li[i,1],replacement = li[i,2],eachPath))
-    })
-  }
-}
-
-#Conversao II
-li<-as.data.frame(list.files(path = pathData_c, pattern = ".tif|.TIF"))
-li$nn <- paste0(gsub(li[,1],1,substr(li[,1],1,8)), "_", substr(li[,1],20,23))
-
-for (i in 1:nrow(li)){
-  is.pattern = grep(li[i,1],li)
-  if (identical(is.pattern,integer(0)) == FALSE){
-    sapply(li[is.pattern],FUN=function(eachPath){ 
-      file.rename(from=eachPath,to= sub(pattern= li[i,1],replacement = li[i,2],eachPath))
-    })
-  }
-}
-
-
 
 
 ## Move Files
 # 
 # # list files to be move
-# my_files <- list.files(path="C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI/DOY_001", pattern='.tif$', recursive=F, ignore.case=T, 
-#                        full.names=T)
-# 
+input_files
+
+input_files <- list.files(path= pathData_d, 
+                          pattern='.tif$', recursive=F, ignore.case=T,
+                          full.names=T)
+basename(input_files)
+
+input_files <- list.files(path="C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI/DOY_001", 
+                          pattern='.tif$', recursive=F, ignore.case=T,
+                          full.names=T)
+#
+pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_NDVI"
+output_folder <- dir(pathData,pattern="DOY")
+
+
+# Create copy of files
+file.copy(from = paste0(pathData_d, my_files),
+          to = paste0("C:/Users/Joach/Desktop/my directory b/", my_files))
+
 # # custom function
 # my_function <- function(x){
 #   file.rename( from = file.path("yourpath/folder1", x) ,
