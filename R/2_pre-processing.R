@@ -106,6 +106,7 @@ plot(border)
 # MOD13Q1.006__250m_16_days_pixel_reliability_doy2000049_aid0001.tif to 049_2000.tif
 
 pathData_d <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/MOD13Q1_2000-2022"
+setwd(pathData_d)
 
 li<-as.data.frame(list.files(path = pathData_d, pattern = ".tif|.TIF"))
 ## conversao de dias julianos "%Y%j" para "%Y.%m.%d" and rename
@@ -120,9 +121,11 @@ for (i in 1:nrow(li)){
   }
 }
 
+# 001_2001001_aid0001.tif to 001_2001.tif
+
 #Conversao II
 li<-as.data.frame(list.files(path = pathData_d, pattern = ".tif|.TIF"))
-li$nn <- paste0(gsub(li[,1],1,substr(li[,1],1,8)), "_", substr(li[,1],20,23))
+li$nn <- paste0(gsub(li[,1],1,substr(li[,1],1,8)), "", substr(li[,1],20,23))
 
 for (i in 1:nrow(li)){
   is.pattern = grep(li[i,1],li)
@@ -135,6 +138,7 @@ for (i in 1:nrow(li)){
 
 # files Pixel Reliability
 pathData_e <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/px_reliability"
+setwd(pathData_e)
 
 li<-as.data.frame(list.files(path = pathData_e, pattern = ".tif|.TIF"))
 ## conversao de dias julianos "%Y%j" para "%Y.%m.%d" and rename (Pixel Reliability)
@@ -151,7 +155,7 @@ for (i in 1:nrow(li)){
 
 #Conversao II
 li<-as.data.frame(list.files(path = pathData_e, pattern = ".tif|.TIF"))
-li$nn <- paste0(gsub(li[,1],1,substr(li[,1],1,8)), "_", substr(li[,1],20,23))
+li$nn <- paste0(gsub(li[,1],1,substr(li[,1],1,8)), "", substr(li[,1],20,23))
 
 for (i in 1:nrow(li)){
   is.pattern = grep(li[i,1],li)
@@ -236,17 +240,22 @@ input_files <- list.files(path= pathData_d,
                           full.names=T)
 basename(input_files)
 
+parts <- strcapture(".*_(D[01])_.*(brightfield|FITC).*", files, list(d="", tw=""))
+parts
+
+pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_NDVI"
+output_folder <- dir(pathData,pattern="DOY")
+
 input_files <- list.files(path="C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI/DOY_001", 
                           pattern='.tif$', recursive=F, ignore.case=T,
                           full.names=T)
 #
-pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_NDVI"
-output_folder <- dir(pathData,pattern="DOY")
+
 
 
 # Create copy of files
-file.copy(from = paste0(pathData_d, my_files),
-          to = paste0("C:/Users/Joach/Desktop/my directory b/", my_files))
+file.copy(from = paste0(pathData_d, input_files),
+          to = paste0(output_folder, input_files))
 
 # # custom function
 # my_function <- function(x){
