@@ -167,7 +167,48 @@ for (i in 1:nrow(li)){
 }
 
 
+## Move Files
 ## move files "DOY_YYYY.tif" to subfolders "DOY_YYYY"
+ 
+# # list files to be move
+
+
+pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_NDVI"
+#output_folder <- dir(pathData,pattern="DOY", full.names = T)
+output_folder <- dir(pathData_c,pattern="DOY", full.names = T) #data_Pixel_Reliability
+
+#DOYs <- unique(substr(basename(pathData_c),1,3))
+
+day <- c("001_" ,"017_", "033_", "049_", "065_", "081_", "097_", "113_", "129_", "145_", "161_", "177_", 
+         "193_", "209_", "225_", "241_", "257_", "273_", "289_", "305_", "321_", "337_", "353_")
+
+day
+
+
+input_files <- list.files(path= pathData_e, #px_reliability
+                          pattern= day[23], recursive=F, ignore.case=T,
+                          full.names=F)
+input_files
+output_folder[23]
+
+# Create copy of files
+file.copy(input_files, file.path(output_folder[23]))
+
+# trying to make a loop (ainda tentando fazer dar certo)
+
+# for(x in 1:length(day)) {
+#   input_files <- list.files(path= pathData_e, #px_reliability
+#                             pattern= day[x], recursive=F, ignore.case=T,
+#                             full.names=F)
+#   print(x)
+#   
+#   for (y in 1:length(input_files)) {
+#   # Create copy of file
+#     file.copy(input_files, file.path(output_folder[y]))
+#     print(y)
+#     }
+#   }
+
 
 
 #enter link to the folder where you have stored the MODIS EVI data
@@ -180,7 +221,6 @@ dlist <- dir(pathData,pattern="DOY")
 pathData_c <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_Pixel_Reliability"  
 dlist_c <- dir(pathData_c,pattern="DOY")
 dir(pathData_c)
-plot(pathData[2])
 
 # List all NDVI rasters (NDVI) and their corresponding pixel reliability 
 # data (NDVIqc).
@@ -230,32 +270,9 @@ setTxtProgressBar (pb, 0)
 
 
 
-## Move Files
-# 
-# # list files to be move
-input_files
-
-input_files <- list.files(path= pathData_d, 
-                          pattern='.tif$', recursive=F, ignore.case=T,
-                          full.names=T)
-basename(input_files)
-
-parts <- strcapture(".*_(D[01])_.*(brightfield|FITC).*", files, list(d="", tw=""))
-parts
-
-pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_NDVI"
-output_folder <- dir(pathData,pattern="DOY")
-
-input_files <- list.files(path="C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI/DOY_001", 
-                          pattern='.tif$', recursive=F, ignore.case=T,
-                          full.names=T)
-#
 
 
 
-# Create copy of files
-file.copy(from = paste0(pathData_d, input_files),
-          to = paste0(output_folder, input_files))
 
 # # custom function
 # my_function <- function(x){
