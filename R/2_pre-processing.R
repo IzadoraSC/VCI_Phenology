@@ -9,7 +9,8 @@ library(rasterVis)         # Advanced plotting functions for raster objects
 library(ggplot2)           # Functions for graphing and mapping
 library(RColorBrewer)      # Creates nice color schemes
 library(stringr)
-
+library(terra)
+library(filesstrings)
 
 # Drought hazard assessment - Avaliacao dos riscos de seca
   # focuses on the drought hazard assessment which uses a weighted 
@@ -144,6 +145,7 @@ li<-as.data.frame(list.files(path = pathData_e, pattern = ".tif|.TIF"))
 ## conversao de dias julianos "%Y%j" para "%Y.%m.%d" and rename (Pixel Reliability)
 #li$nn<-paste0(substr(li[,1],1,34),format(as.Date(substr(li[,1],35,41), "%Y%j"),"%Y.%m.%d"),substr(li[,1],42,66))
 li$nn <- paste0(gsub(li[,1],1,substr(li[,1],52,54)), "_", substr(li[,1],48,66))
+
 for (i in 1:nrow(li)){
   is.pattern = grep(li[i,1],li)
   if (identical(is.pattern,integer(0)) == FALSE){
@@ -157,6 +159,7 @@ for (i in 1:nrow(li)){
 li<-as.data.frame(list.files(path = pathData_e, pattern = ".tif|.TIF"))
 li$nn <- paste0(gsub(li[,1],1,substr(li[,1],1,8)), "", substr(li[,1],20,23))
 
+
 for (i in 1:nrow(li)){
   is.pattern = grep(li[i,1],li)
   if (identical(is.pattern,integer(0)) == FALSE){
@@ -167,6 +170,8 @@ for (i in 1:nrow(li)){
 }
 
 
+setwd("C:/Users/Administrador/Documents/GitHub/VCI_Phenology")
+
 ## Move Files
 ## move files "DOY_YYYY.tif" to subfolders "DOY_YYYY"
  
@@ -174,7 +179,9 @@ for (i in 1:nrow(li)){
 
 
 pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_NDVI"
-#output_folder <- dir(pathData,pattern="DOY", full.names = T)
+pathData_c <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_Pixel_Reliability"
+
+output_folder <- dir(pathData,pattern="DOY", full.names = T)
 output_folder <- dir(pathData_c,pattern="DOY", full.names = T) #data_Pixel_Reliability
 
 #DOYs <- unique(substr(basename(pathData_c),1,3))
@@ -184,18 +191,41 @@ day <- c("001_" ,"017_", "033_", "049_", "065_", "081_", "097_", "113_", "129_",
 
 day
 
+# input_files <- list.files(path= pathData_e, #pathData_d=NDVI; pathData_e=px_reliability
+#                           pattern= day[23], recursive=F, ignore.case=T,
+#                           full.names=T)
+# input_files
+# output_folder[23]
+# 
+# # Create copy of files
+# file.copy(input_files, output_folder[23])
+# #warnings()
+#  
 
-input_files <- list.files(path= pathData_e, #px_reliability
-                          pattern= day[23], recursive=F, ignore.case=T,
-                          full.names=F)
-input_files
-output_folder[23]
+n <- length(output_folder)
+input_files <- numeric()
 
-# Create copy of files
-file.copy(input_files, file.path(output_folder[23]))
+for (i in 1:n) {
+  input_files <- list.files(path= pathData_e, #pathData_d=NDVI; pathData_e=px_reliability
+                            pattern= day[23], recursive=F, ignore.case=T,
+                            full.names=T)
+  print(input_files[i])
+  for (j in 1:n) {
+    file.copy(input_files, output_folder[23])
+  }
+}
 
-# trying to make a loop (ainda tentando fazer dar certo)
 
+
+####
+
+peso <- c(80, 70, 90, 55)
+altura <- c(1.77, 1.60, 1.65, 1.90)
+n <- length(peso)
+vetor <- numeric(n)
+for (i in 1:n) {
+  vetor[i] <- (peso[i] / altura[i] ^ 2)
+}
 # for(x in 1:length(day)) {
 #   input_files <- list.files(path= pathData_e, #px_reliability
 #                             pattern= day[x], recursive=F, ignore.case=T,
@@ -225,17 +255,17 @@ dir(pathData_c)
 # List all NDVI rasters (NDVI) and their corresponding pixel reliability 
 # data (NDVIqc).
 
-NDVI <- list.files(path="C:/Users/user/Documents/GitHub/VCI_Phenology/data/MOD13Q1_2000-2022",
+NDVI <- list.files(path="C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/MOD13Q1_2000-2022",
                    pattern='.tif$', recursive=F, ignore.case=T, 
                    full.names=T)
 
-NDVIqc <- list.files(path= "C:/Users/user/Documents/GitHub/VCI_Phenology/data/px_reliability",
+NDVIqc <- list.files(path= "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/px_reliability",
                      pattern='.tif$', recursive=F, ignore.case=T,
                      full.names=T)
 
 # #Showing an example of the downloaded NDVI data
 exNDVI <- raster(NDVI[1])
-plot(exNDVI)
+plot(exNDVI, add=border)
 
 # #Showing an example of the corresponding Pixel Reliability
 exNDVIqc <- raster(NDVIqc[1])
