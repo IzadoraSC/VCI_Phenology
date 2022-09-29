@@ -5,6 +5,7 @@
   # Season (PoS) and End of Season (EoS).
 # The processing in TIMESAT is controlled by a number of settings. 
 
+# 
 
 # list and remove objects from workspace
 ls()
@@ -20,17 +21,15 @@ library(ggplot2)           # Functions for graphing and mapping
 library(RColorBrewer)      # Creates nice color schemes
 library(stringr)
 library(rts)
+library(rTIMESAT)
 
 # Data path: Enter the path to a folder where you have enough free space to store your 
 # MODIS data and the resulting products. 
 
-# dataPath <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/"
-# pathData <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/NDVI_MODIS"
-# dataPath2 <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/MOD13Q1_CMNP_2000-2022/MOD13Q1.006_2000046_to_2022243"
 
-dataPath <- "C:/Users/Administrador/Documents/GitHub/timesat_cmnp/data/"
-pathData <- "C:/Users/Administrador/Documents/GitHub/timesat_cmnp/data/NDVI_MODIS"
-dataPath2 <- "C:/Users/Administrador/Documents/GitHub/timesat_cmnp/data/MOD13Q1_CMNP_2000-2022/MOD13Q1.006_2000046_to_2022243"
+dataPath <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/" # dir of the project
+pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/NDVI_mask" # dir where have NDVI products 
+dataPath2 <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/MOD13Q1_CMNP_2000-2022" # dir where have raw data NDVI 
 
 
 dir(pathData )
@@ -131,6 +130,8 @@ close(fileCr)
 
 
 # Create TIMESAT setting file (.set)
+# Ver https://rdrr.io/github/kongdd/rTIMESAT/man/update_setting.html para criar .set usando
+# o pacote rTIMESAT
 #Recreate TIMESAT settings-file convention - line by line
 setlines <- c()
 #1: Headerline

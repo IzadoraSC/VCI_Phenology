@@ -12,24 +12,32 @@ library(sp)
 
 #enter link to the folder where you have stored the MODIS EVI data
 
-pathData <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/data_NDVI"
-dataPath <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data"
+pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/data_NDVI"
+dataPath <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data"
 
 dlist <- dir(pathData,pattern="DOY")
 
 # enter link to the folder where you have stored the MODIS Pixel Reliability data
 
-pathData_c <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/Data_Pixel_Reliability"  
+pathData_c <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/Data_Pixel_Reliability"  
 dlist_c <- dir(pathData_c,pattern="DOY")
 
 
 #insert link to the shapefile with the country borders
 
-border <- readOGR(dsn = path.expand("C:/Users/user/Documents/GitHub/timesat_cmnp/data/shp"),
+border <- readOGR(dsn = path.expand("C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/shp"),
                   layer = 'ret_env_modis')
 
 plot(border)
 str(border)
+
+cmnp <- readOGR(dsn = path.expand("C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/shapefile"),
+                layer = 'limite_pncm')
+border_crs <- "+proj=longlat +datum=WGS84 +no_defs"
+cmnp <- spTransform(cmnp, border_crs)
+
+plot(cmnp)
+
 
 #enter the links to the folder where you want to store the resulting .jpg-images and .tif-files.
 
@@ -37,7 +45,7 @@ if (!file.exists(paste0(dataPath,'/NDVI_jpg')))
   dir.create(paste0(dataPath,'/NDVI_jpg'))
 
 #data NDVI whit cloudmask
-path_jpg <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/NDVI_jpg"  
+path_jpg <- "C:/Users/Administra/Documents/GitHub/timesat_cmnp/data/NDVI_jpg"  
 path_tif <- "C:/Users/user/Documents/GitHub/timesat_cmnp/data/NDVI_jpg"
 # 
 # #data NDVI whitout cloudmask
@@ -51,10 +59,7 @@ pb <- txtProgressBar (min=0, max=length(dlist), style=1)
 setTxtProgressBar (pb, 0)
 
 
-#### https://rpubs.com/UN-SPIDER/VCI
-#Creating a progress bar in the Console, wich ends at the end of the loop. The progress bar looks
-# like this:
-#Main code for processing the EVI data, masking out clouds, calculating the VCI and writing the results
+#Main code for processing the EVI data, masking out clouds, and writing the results
 
 for (i in 1:length(dlist)) {                   # start of the outer for-loop
   fold <- paste(pathData,dlist[i],sep="/")         # the respective DOY folder of the data_NDVI folder
@@ -120,7 +125,8 @@ for (i in 1:length(dlist)) {                   # start of the outer for-loop
     plot(ndvi[[1]],
          zlim=c(0,1),
          col=my_palette(101),                                           # sets the colors as defined above
-         main=paste("NDVI"," (no_cloudmask)"," sample ",doy," ",year,sep="")) # automizes the title of the plot.
+         main=paste("NDVI"," (with Cloudmask)"," sample ",doy," ",year,sep="")) # automizes the title of the plot.
+    plot(cmnp, bg="transparent", add=T) # insert shapefile limit area
     # ToDo: Adjust the file naming according to the data you are processing!
     # E.g. if you base your VCI on NDVI data, write (NDVI)
     
@@ -129,7 +135,7 @@ for (i in 1:length(dlist)) {                   # start of the outer for-loop
     
     
     writeRaster(ndvi_c[[k]], filename=paste(fold_tif,"/",doy,"_",year,".tif",sep=""), format="GTiff", overwrite=TRUE)
-    writes the geotiff and automizes the file naming according to the pattern DOY_YYYY
+    # writes the geotiff and automizes the file naming according to the pattern DOY_YYYY
     # writeRaster(ndvi[[k]], filename=paste(fold_tif,"/",doy,"_",year,".tif",sep=""), format="GTiff", datatype='INT1S' overwrite=TRUE)
     
     
