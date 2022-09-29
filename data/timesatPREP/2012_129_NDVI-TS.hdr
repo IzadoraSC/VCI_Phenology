@@ -1,0 +1,25 @@
+NROWS           232 
+NCOLS           332 
+NBANDS          1 
+NBITS           16 
+BYTEORDER       I 
+PIXELTYPE       SIGNEDINT 
+LAYOUT          BSQ 
+SKIPBYTES       0
+ULXMAP          -47.4281249953328 
+ULYMAP          -6.88854166666595 
+XDIM            0.002083333 
+YDIM            0.002083333 
+BANDROWBYTES    664 
+TOTALROWBYTES   664 
+BANDGAPBYTES    0
+NODATA          -32768 
+
+
+The below is additional metadata, not part of the BIL/HDR format
+----------------------------------------------------------------
+CREATOR=R package:x
+CREATED= 2022-09-29 12:15:01 
+Projection= +proj=longlat +datum=WGS84 +no_defs 
+MinValue= -999 
+MaxValue= 9897 
