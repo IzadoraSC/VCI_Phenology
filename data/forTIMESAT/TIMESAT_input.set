@@ -1,0 +1,38 @@
+Settings file version: 3.3 
+TIMESAT_input      %Job_name (no blanks) 
+1               %Image /series mode (1/0) 
+0               %Trend (1/0) 
+0               %Use quality data (1/0) 
+C:\Users\Administrador\Documents\GitHub\VCI_Phenology\data\forTIMESAT\TIMESATlist.txt  %Data file list/name 
+dummy  %Mask file list/name 
+2               %Image file type 
+0               %Byte order (1/0) 
+232 332      %Image dimension (nrow ncol) 
+1 232 1 332      %Processing window (start row end row start col end col) 
+21 23           %No. years and no. points per year 
+-10000 10000         %Valid data range (lower upper) 
+-1e+06 1e+06 1      %Quality range 1 and weight 
+-1e+06 1e+06 1      %Quality range 2 and weight 
+-1e+06 1e+06 1      %Quality range 3 and weight 
+0.0             %Amplitude cutoff value 
+0               %Debug flag (3/2/1/0) 
+1 1 0           %Output files (1/0 1/0 1/0) 
+0               %Use land cover (1/0) 
+   %Name of landcover file 
+0               %Spike method (3/2/1/0) 
+2.0             %Spike value 
+3.0             %STL stiffness value (1-10) 
+1               %No. of landcover classes 
+************ 
+1               %Land cover code for class  1 
+1.0             %Seasonality parameter (0-1) 
+1               %No. of envelope iterations (3/2/1) 
+2               %Adaptation strength (1-10) 
+0 -99999             %Force minimum (1/0) and value 
+1               %Fitting method (3/2/1) 
+1               %Weight update method 
+4               %Window size for Sav-Gol. 
+0               %Reserved  
+0               %Reserved 
+1               %Season start / end method (4/3/2/1) 
+0.5 0.5         %Season start / end values 

@@ -29,7 +29,7 @@ library(rTIMESAT)
 
 dataPath <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/" # dir of the project
 pathData <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/NDVI_mask" # dir where have NDVI products 
-dataPath2 <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/MOD13Q1_CMNP_2000-2022" # dir where have raw data NDVI 
+dataPath2 <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/MOD13Q1_2000-2022" # dir where have raw data NDVI 
 
 
 dir(pathData )
@@ -57,11 +57,12 @@ length(YEARs)
 NDVI <- list.files(path=pathData, pattern='.tif$', recursive=F, ignore.case=T, 
                    full.names=T)
 exNDVI <- raster(NDVI[1])
-exNDVI <- raster(allNDVITIF[1])
-exNDVI <- raster(rasterData[1])
+exNDVI
+# exNDVI <- raster(allNDVITIF[1])
+# exNDVI <- raster(rasterData[1])
 
 
-plot(exNDVI)
+#plot(exNDVI)
 extent(exNDVI)
 
 # Create output folders for TIMESAT. First, the output folder for the TIMSAT preparation (timesatPREP) 
@@ -77,9 +78,12 @@ if (!file.exists(paste0(dataPath,'/timesat')))
 # List all EVI tiffs and change their file format to binary for TIMESAT. TIMESAT can only read binary data,
 # thus the tiffs need to be changed.
 
-#Creating output folders
-#allNDVITIF <- list.files(paste0(dataPath,"NDVI_MODIS/"), full.names=T, pattern=".tif$",recursive=F)
-allNDVITIF <- list.files(paste0(dataPath,"MOD13Q1_CMNP_2000-2022/MOD13Q1.006_2000046_to_2022243/"), full.names=T, pattern=".tif$",recursive=F)
+
+#allNDVITIF <- list.files(paste0(dataPath,"NDVI_mask/"), full.names=T, pattern=".tif$",recursive=F)
+allNDVITIF <- list.files(paste0(dataPath,"MOD13Q1_2000-2022/"),
+                         full.names=T, pattern=".tif$",recursive=F)
+
+basename(allNDVITIF)
 
 
 #Change file-format to binary for TIMESAT
@@ -88,17 +92,17 @@ for(i in 1:length(allNDVITIF)){
   #NAs can cause trouble with TIMESAT. Replacing with -999
   tc[is.na(tc)] <- -999
   #switch filename-convention for correct sorting
-  #flname <- paste0(substr(basename(allNDVITIF[i]),5,8),"_",substr(basename(allNDVITIF[i]),1,3),"_NDVI-TS")
+  # flname <- paste0(substr(basename(allNDVITIF[i]),5,8),"_",substr(basename(allNDVITIF[i]),1,3),"_NDVI-TS")
   # flname <- paste0(substr(basename(allNDVITIF[i]),39,41),"_",substr(basename(allNDVITIF[i]),35,38),"_NDVI-TS")
   flname <- paste0(substr(basename(allNDVITIF[i]),35,38),"_",substr(basename(allNDVITIF[i]),39,41),"_NDVI-TS")
   #writeRaster(tc, filename=paste0(dataPath,'/timesatPREP/',flname), format="IDRISI", overwrite=T)
   # writeRaster(tc, filename=paste0(dataPath,'/timesatPREP/',flname), format="HFA", datatype='INT2S',
   #             overwrite=T)  ## .img
   # Save in 16 bit signed integer BSQ format with an ENVI header
-  writeRaster(tc, filename=paste0(dataPath,'/timesatPREP/',flname), format="ENVI",
-              options='INTERLEAVE=BSQ', datatype='INT2S', overwrite=T) ## .envi .hdr
-  # writeRaster(tc, filename=paste0(dataPath,'/timesatPREP/',flname), format="BSQ", 
-  #             datatype='INT2S', overwrite=T)  ## .bsq
+  # writeRaster(tc, filename=paste0(dataPath,'/timesatPREP/',flname), format="ENVI",
+  #             options='INTERLEAVE=BSQ', datatype='INT2S', overwrite=T) ## .envi .hdr
+  writeRaster(tc, filename=paste0(dataPath,'/timesatPREP/',flname), format="BSQ",
+              datatype='INT2S', overwrite=T)  ## .bsq
 
   
   writeFormats() #names file types for writing 
@@ -108,30 +112,26 @@ for(i in 1:length(allNDVITIF)){
 }
 
 
-# MOD13Q1.006__250m_16_days_NDVI_doy2000049_aid0001
-# 35-38 = 2000 (year)
-# 39-41 = 049 (doy)
-
 # List TIMESAT compatible files (binary files) and create a TIMESAT image list (.txt)
 # with these files.
 #List new, TIMESAT-compatible files
+
+
 #allNDVITS <- list.files(paste0(dataPath,"/timesatPREP/"), full.names=T, pattern=".rst$",recursive=F)
 #allNDVITS <- list.files(paste0(dataPath,"/timesatPREP/"), full.names=T, pattern=".img$",recursive=F)
-#allNDVITS <- list.files(paste0(dataPath,"/timesatPREP/"), full.names=T, pattern=".bsq$",recursive=F)
-allNDVITS <- list.files(paste0(dataPath,"/timesatPREP/"), full.names=T, pattern=".envi$",recursive=F)
+allNDVITS <- list.files(paste0(dataPath,"/timesatPREP/"), full.names=T, pattern=".bsq$",recursive=F)
+#allNDVITS <- list.files(paste0(dataPath,"/timesatPREP/"), full.names=T, pattern=".envi$",recursive=F)
 
 
-#Create TIMESAT image-list
+#Create TIMESAT image-list (I COULDN'T USE)
 imglist <- c(length(allNDVITS),allNDVITS)
-fileCr<-file( paste0(dataPath,'/forTIMESAT/TIMESATlist2.txt'))
+fileCr<-file( paste0(dataPath,'/forTIMESAT/TIMESATlist.txt'))
 #fileCr<-read.table('C:/Users/user/Documents/GitHub/timesat_cmnp/data/forTIMESAT/TIMESATlist.txt')
 writeLines(imglist,fileCr)
 close(fileCr)
 
 
 # Create TIMESAT setting file (.set)
-# Ver https://rdrr.io/github/kongdd/rTIMESAT/man/update_setting.html para criar .set usando
-# o pacote rTIMESAT
 #Recreate TIMESAT settings-file convention - line by line
 setlines <- c()
 #1: Headerline
@@ -201,20 +201,8 @@ if (length(allNDVITS) > 0){
   print("DONE - Please proceed in TIMESAT. Do NOT close this R-Session")
 }
 
+### (I COULDN'T USE IT EITHER)
+# Trying create TIMESAT setting file (.set) using package rTIMESAT
+# https://rdrr.io/github/kongdd/rTIMESAT/man/update_setting.html 
 
-# stack modis bands
 
-dataPath3 <- "C:/Users/Administrador/Documents/GitHub/timesat_cmnp/data/timesatPREP"
-
-all_modis_bsq <- list.files(dataPath3, pattern='.bsq$', recursive=F, ignore.case=T, 
-                   full.names=T)
-
-all_modis_bsq
-
-# # create spatial raster stack
-all_modis_bsq_stack <- stack(all_modis)
-writeRaster(all_modis_bsq_stack, filename=paste0(dataPath,'/dado_img_timesat/',flname), 
-            format="BSQ", datatype='INT2S', overwrite=T)
-write_setting()
-
-#all_modis_bands_pre_br <- brick(all_modis_bands_pre_st)
