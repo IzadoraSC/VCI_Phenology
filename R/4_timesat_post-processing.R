@@ -1,5 +1,7 @@
-###Start TIMESAT post-processing
 library(lintr)
+
+###Start TIMESAT post-processing
+
 
 dataPath2 <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/MOD13Q1_2000-2022" # dir where have raw data NDVI 
 
@@ -8,12 +10,18 @@ NDVI <- list.files(path=dataPath2, pattern='.tif$', recursive=F, ignore.case=T,
 exRST <- raster(NDVI[1])
 exRST
 
+# TIMESAT path: Enter the path to your TIMESAT 3.3 installation including the subfolder
+# /compiled/Win64.
+
+TSpath <-"C:/timesat33/compiled/Win64"
+
+#Enter the hemisphere of your study area: 1 = north; 0 = south. For South America set hemisphere = 0.
+hemisphere <- 0
+
 
 # Define function bintiff that reads TIMESAT outputs. In order to use the TIMESAT
 # outputs in this analysis the format of the TIMESAT output needs to be changed to
 # tiff.
-
-
 
 ##Function to read TIMESAT outputs using TIMESAT-tools
 bintiff <- function (rast, base_image) {
@@ -32,14 +40,14 @@ bintiff <- function (rast, base_image) {
     matrix(raw_vector, nrow(base_image), ncol(base_image), byrow = T)
   tiff_raster <- raster(data_matrix, template = base_image)
   return(tiff_raster)
-}#Reading raw TIMESAT output (Variant B; Timesat-fortran tools)
+}
+
+#Reading raw TIMESAT output (Variant B; Timesat-fortran tools)
 path_tpaFile <- paste0(TSpath, "/TIMESAT_input_TS.tpa")
+
 #Path to TIMESAT-seas2img-tool for converting
 pTSpath <- gsub("compiled/Win64/", "compiled/Win64", TSpath)
-seasImg <-
-  gsub("compiled/Win64",
-       "timesat_fortran/tools/TSF_seas2img",
-       pTSpath)
+seasImg <- gsub("compiled/Win64", "timesat_fortran/tools/TSF_seas2img", pTSpath)
 #TIMESAT will not calculate phenology for the very first season, hence the following correction-variable
 if (hemisphere == 1) {
   corr <- 1
@@ -73,57 +81,20 @@ for (d in 1:3) {
   for (s in 1:noSeasons) {
     startIX <- 1 + (23 * (s))
     endIX <- 23 + (23 * (s))
-    print(paste0(
-      "Reading/converting ",
-      descrinfo,
-      " ",
-      s,
-      "/",
-      noSeasons,
-      "..."
-    ))
+    print(paste0("Reading/converting ", descrinfo, " ", s, "/", noSeasons, "..."))
     
     #Calling seas2img via command-prompt
     #(Parameters: infile, seaspar, datemin, datemax, misseason, misspix, nameout, filetype)
-    system(
-      paste0(
-        "\"",
-        seasImg,
-        "\" \"",
-        path_tpaFile,
-        "\" ",
-        SeasonIndicator,
-        " ",
-        startIX,
-        " ",
-        endIX,
-        " 0 0 NSE",
-        SeasonIndicator,
-        "_",
-        s,
-        " 2"
-      ),
-      wait = TRUE,
-      show.output.on.console = F
-    )
+    system(paste0("\"",  seasImg,  "\" \"", path_tpaFile,  "\" ",  SeasonIndicator,
+                  " ",  startIX,  " ",  endIX,  " 0 0 NSE", SeasonIndicator,  "_", s,  " 2"),
+           wait = TRUE, show.output.on.console = F)
     
     #Convert binary to tiff
-    r <-
-      bintiff(paste0(dataPath, "/temp/NSE", SeasonIndicator, "_", s, "_season1"),
-              base_image) %% 23
-    writeRaster(
-      r,
-      filename = paste0(
-        dataPath,
-        "/timesat/",
-        as.numeric(YEARs[s]) + 1,
-        "_",
-        descrinfo
-      ),
-      format = "GTiff",
-      overwrite = T
-    )
-  }
+    r <- bintiff(paste0(dataPath, "/temp/NSE", SeasonIndicator, "_", s, "_season1"),
+                 base_image) %% 23
+    writeRaster(r, filename = paste0(dataPath,"/timesat/", as.numeric(YEARs[s]) + 1, "_",
+                                     descrinfo), format = "GTiff", overwrite = T)
+    }
   
 }
 
@@ -145,7 +116,13 @@ timesatRasterSOS[timesatRasterSOS == 0] <- NA
 timesatRasterPOS[timesatRasterPOS == 0] <- NA
 timesatRasterEOS[timesatRasterEOS == 0] <- NA
 
-###
+###For analysis applied to agriculture, follow
+# TIMESAT detects the phenology parameters based on the EVI or NDVI signal but does not necessarily 
+# consider temporal crop phenology stages e.g. grain filling periods. Thus, minimum and maximum 
+# time gaps are defined to ensure that agricultural growth stages are guaranteed. 
+# The minimum time between SoS and PoS is 20 days, between PoS and EoS 10 days and the overall
+# season can only (maximum) have 240 days. These thresholds can be adjusted here in the script.
+
 ##Check for difference between Start, Peak, End to remove unreliable data (in days)
 # thresh1:  minimum allowed difference between peak of the season (POS) and start of the season (SOS) in days
 thresh1 <- 20
@@ -194,7 +171,7 @@ for(i in 1:nlayers(timesatRasterSOS)){
   
 }
 
-
+### Rotate this part after the stage to apply it to agricultural studies or not.
 
 #Calculation of mean Seasonal Metrics + output
 meanSOS <- calc(timesatRasterSOS,fun=mean,na.rm=T)
@@ -206,67 +183,13 @@ writeRaster(meanPOS, filename=paste0(dataPath,'/timesat/POS-MEAN'), format="GTif
 writeRaster(meanEOS, filename=paste0(dataPath,'/timesat/EOS-MEAN'), format="GTiff", overwrite = T )
 
 
-
-library(ggplot2)
-library(ggmap)
-library(maps)
-library(mapdata)
-library(tmap)
-
-#insert link to the shapefile with the country borders
-
-border <- readOGR(dsn = path.expand("C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/shapefile"),
-                  layer = 'ret_env_modis')
-
-plot(border)
-
-cmnp <- readOGR(dsn = path.expand("C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/shapefile"),
-                layer = 'limite_pncm')
-border_crs <- "+proj=longlat +datum=WGS84 +no_defs"
-cmnp <- spTransform(cmnp, border_crs)
-
-plot(cmnp)
-
-SeasonInd <- list.files(path= "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/timesat",
-                        pattern='.tif$', recursive=F, ignore.case=T,
-                        full.names=T)
-
-# #Showing an example of the downloaded NDVI data
-exSeason <- raster(SeasonInd[3])
-x11()
-
-plot(exSeason, main = "Season - Chapada das Mesas National Park")
-  #plot(border, bg="transparent", add=T )
-plot(cmnp, bg="transparent", add=T )
-
-p <- ggplot(data = exSeason) + 
-  geom_sf(data = cmnp, fill = NA, colour = "black", size = 0.25) + 
-  geom_tile(data = exSeason %>% filter(is.na(value)), mapping = aes(x = x, y = y), size = 0.25, fill = NA, color = alpha("gray", 0.25)) +
-  geom_tile(data = exSeason %>% filter(!is.na(value)), mapping = aes(x = x, y = y), size = 0.25, fill = NA, color = alpha("red", 0.5)) +
-  theme_map()
-
-p <- tm_shape(cmnp) + tm_borders(col = "black", lwd = 3)
-
-p1 = tm_shape(exSeason) + tm_raster(palette = "RdYlGn", legend.show = TRUE, 
-                                    style = "cat") + p +
-  ?tm_layout(legend.outside = TRUE)
-p1
-#https://github.com/EmilHvitfeldt/r-color-palettes
-p2 <- p1 + p 
-p2
-tmaptools::palette_explorer()
-
-library(cols4all)
-cols4all::c4a_gui()
-
-#### usando pacote rTIMESAT para ler os TIMESAT output files
+#### using the rTIMESAT package to read the TIMESAT output files
 file_tpa <- "C:/timesat33/compiled/Win64/TIMESAT_input_TS.tpa"
 d_tpa <- read_tpa(file_tpa)
 
 file_tts <- "C:/timesat33/compiled/Win64/TIMESAT_input_fit.tts" 
 d_tts <- read_tts(file_tts)
 
-#deu certo
 
 
 ##########
