@@ -123,6 +123,8 @@ p <- tm_shape(bavaria) +
 #############
 
 ## Mapa
+
+
 mapa_srtm_rio_claro_tmap <- tm_shape(geo_raster_srtm_rio_claro) +
   tm_raster(pal = "viridis", title = "Elevação (m)") +
   tm_shape(geo_vetor_rio_claro) +
@@ -142,6 +144,33 @@ mapa_srtm_rio_claro_tmap <- tm_shape(geo_raster_srtm_rio_claro) +
 mapa_srtm_rio_claro_tmap
 
 
+########### VCI
+WeightedVCI <- list.files(path= "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/VCI_weighted",
+                          pattern='.tif$', recursive=F, ignore.case=T,
+                          full.names=T)
+
+VCI_ponder <- raster(WeightedVCI[5])
+VCI_ponder
+
+# Mapa
+
+vci_2020_2021 <- tm_shape(VCI_ponder) + 
+  tm_raster(palette = terrain.colors(5), style = 'cont') + li +
+  tm_compass(position = c(.9, .08)) +
+  tm_scale_bar(text.size = .5, position = c(.02, 0)) +
+  tm_graticules(lines = FALSE) +
+  tm_credits("CRS: WGS84/Geo", position = c(.02, .07)) +
+  tm_layout(
+    legend.title.color='white',
+    panel.labels = c("classified VCI 2020/2021"),
+  ) +
+  tm_facets(nrow = 1)
+
+vci_2020_2021
+x11()
+
+plot(VCI_ponder)
+plot(cmnp, bg="transparent", add=T, lwd = 2)
 
 ##################
 ## Plot

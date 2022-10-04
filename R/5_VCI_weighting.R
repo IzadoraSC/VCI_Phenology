@@ -32,6 +32,13 @@ dataPath2 <- "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/MOD13Q1
 #Enter the hemisphere of your study area: 1 = north; 0 = south. For South Africa set hemisphere = 0.
 hemisphere <- 0
 
+# Analysis period: Define the period of analysis with a vector of two components. 
+# The first is the starting year and the second the final year. If you want to 
+# process all available years just comment the line with a #. In this example all 
+# data is used, thus the line is commented.
+
+AnalysisPeriod <- c(2001, 2002)
+
 # Extract all Days of Year (DOY) and YEARs from the filenames. MODIS vegetation 
 # data consists of 16-day composites. The filename contains the year and Julian
 # day of acquisition
@@ -41,7 +48,7 @@ rasterData <- list.files(path=dataPath2, pattern='.tif$', recursive=F, ignore.ca
 NDVIrasterData <- rasterData[grepl('NDVI',basename(rasterData))]
 DOYs <- unique(substr(basename(NDVIrasterData),39,41))
 YEARs <- unique(substr(basename(NDVIrasterData),35,38))
-#YEARs <- c("2001", "2002", "2003", "2004")
+#YEARs <- c("2001", "2002")
 length(YEARs)
 
 # List all VCI images.
@@ -58,32 +65,35 @@ dir.create(paste0(dataPath,'/VCI_weighted'))
 
 # Loop through each year(or season) and check whether analysis period is defined.
 for (sy in min(as.numeric(YEARs)):max(as.numeric(YEARs))) {
-  if ((exists("AnalysisPeriod") &&
-       (sy > AnalysisPeriod[1] &&
-        sy < AnalysisPeriod[2])) || exists("AnalysisPeriod") == F) {
+  if ((exists("AnalysisPeriod") && (sy > AnalysisPeriod[1] && sy < AnalysisPeriod[2])) || exists("AnalysisPeriod") == F){
     if (!(sy == max(as.numeric(YEARs)) && hemisphere == 0)) {
+      
       #Check for hemisphere, load VCI data for the season
-      if (hemisphere == 1) {
+      if (hemisphere == 1){
         lyVCI <- allVCI[grepl(sy, allVCI)]
         dscr <- sy
-      } else{
+      }else{
         #Load correct data if southern hemisphere was selected (seasonality shift)
-        lyVCI <- c(allVCI[grepl(sy, allVCI)], allVCI[grepl(sy + 1, allVCI)])
-        if (sy == min(as.numeric(YEARs))) {
+        lyVCI <- c(allVCI[grepl(sy,allVCI)],allVCI[grepl(sy+1,allVCI)])
+        #Adjusting output filenames if southern hemisphere was selected
+        if (sy == min(as.numeric(YEARs))){
           lyVCI <- lyVCI[1:23]
-        } else{
+        }else{
           lyVCI <- lyVCI[13:35]
         }
         #Adjusting output filenames if southern hemisphere was selected
-        dscr <- paste0(sy, "_", sy + 1)
+        dscr <- paste0(sy,"_",sy+1)
       }
     }
   }
 }
 
 
+
 # Stack all VCI for each year.
 yVCI <- stack(lyVCI)
+
+plot(yVCI)
 
 # Block A: Start of Season (SoS) * Extract all pixels that fall in Block A 
 # (SoS to PoS) and set all other pixels NA.
@@ -111,6 +121,10 @@ for (i in 1:23){
 
 # Create mean of the time block BlockA (SoS to PoS).
 BlockA <- calc(BlockA, fun=mean, na.rm=T)
+plot(BlockA)
+
+writeRaster(BlockA,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_BlockA_SOS.tif"),
+            format="GTiff",overwrite=T)
 
 # Block B: Peak of Season (PoS) * Extract all pixels that fall in Block P (PoS)
 # and set all other pixels NA.
@@ -133,7 +147,10 @@ for (i in 1:23){
 
 # Create mean of the time block BlockB (PoS).
 BlockB <- calc(BlockB, fun=mean, na.rm=T)
+plot(BlockB)
 
+writeRaster(BlockB,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_BlockB_POS.tif"),
+            format="GTiff",overwrite=T)
 
 # Block C: End of Season (EoS) * Extract all pixels that fall in Block C
 # (PoS to EoS) and set all other pixels NA.
@@ -155,20 +172,30 @@ for (i in 1:23){
 
 # Create mean of the timeblock BlockC (EOS).
 BlockC <- calc(BlockC, fun=mean, na.rm=T)
+plot(BlockC)
 
+writeRaster(BlockC,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_BlockC_EOS.tif"),
+            format="GTiff",overwrite=T)
 
 # Stack the VCI blocks (according of their weight) and calculate the mean.
 #Weighting: 5-7-1 start-peak-end of season mean
 #Result: weighted VCI by season
 
-WeightedStack <- stack(BlockA,BlockA,BlockA,BlockA,BlockA,BlockB,BlockB,BlockB,BlockB,BlockB,BlockB,BlockB,BlockC)
+WeightedStack <- stack(BlockA,BlockA,BlockA,BlockA,BlockA,
+                       BlockB,BlockB,BlockB,BlockB,BlockB,BlockB,BlockB,
+                       BlockC)
 
 WeightedVCI <- calc(WeightedStack, fun=mean, na.rm=T)
+plot(WeightedVCI)
+
+writeRaster(WeightedVCI,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_WeightedVCI.tif"),
+            format="GTiff",overwrite=T)
 
 # The weighted indices are then classified into five classes resulting in the following values for the final product:
 
 #Output: five classes
 cWeightedVCI <- reclassify(WeightedVCI, c(-1, 10, 4,  10, 20, 3,  20, 30, 2, 30,40, 1,40,101,0))  
+plot(cWeightedVCI)
 
 writeRaster(cWeightedVCI,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_FiveCl.tif"),
             format="GTiff",overwrite=T)
@@ -177,5 +204,17 @@ writeRaster(cWeightedVCI,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_FiveCl
 
 #Output: three classes
 dWeightedVCI <- reclassify(WeightedVCI, c(-1, 10, 2,  10, 40, 1,  40, 101, 0))  
+plot(dWeightedVCI)
+
 writeRaster(dWeightedVCI,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_ThreeCl.tif"),
             format="GTiff",overwrite=T)
+
+#Delete all temporary files and finish.
+#Deleting all temp files
+tmp <- list.files(path=paste0(dataPath,'/temp/'), recursive=F, ignore.case=T, full.names=T)
+file.remove(tmp)
+
+#Finished
+print(paste0(Sys.time(),
+             ' +++++ Finished. You will find the data in the subfolders \'VCI_CMNP\' and \'VCI_weighted\' at ', 
+             dataPath,"."))
