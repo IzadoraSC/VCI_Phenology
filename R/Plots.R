@@ -172,6 +172,50 @@ x11()
 plot(VCI_ponder)
 plot(cmnp, bg="transparent", add=T, lwd = 2)
 
+
+#####
+# Plot 3D - Elevation
+
+# list and remove objects from workspace
+ls()
+rm(list = ls())
+
+library(raster)
+library(dplyr)
+#devtools::install_github("tylermorganwall/rayshader")
+library(rayshader)
+
+## Carregando DEM
+
+dem <- raster('E:/02_banco_de_dados/BD_elevacao/Alos_30m_clip.tif')
+
+plot(dem)
+
+## Raster to matrix
+
+dem_matrix <- raster_to_matrix(dem)
+
+# Plot
+
+dem_matrix %>% 
+  sphere_shade(texture = 'desert') %>% plot_map()
+
+# Plot em 3D
+
+dem_matrix %>% 
+  sphere_shade(texture = 'desert') %>%
+  # add_water(detect_water(dem_matrix), color = 'desert') %>% 
+  add_shadow(ray_shade(dem_matrix, zscale = 30)) %>% 
+  # add_shadow(ray_shade(dem_matrix, zscale = 3), 0.5) %>% 
+  # add_shadow(ambient_shade(dem_matrix), 0) %>% 
+  plot_3d(dem_matrix, zscale = 10)
+# plot_3d(dem_matrix, zscale = 10, fov = 0, theta = 135,
+#         zoom = 0.75, phi = 45, windowsize = c(700,100))
+
+#render_snapshot()
+
+
+
 ##################
 ## Plot
 # mapa_vetor_biomas_ggplot2 <- ggplot(data = cmnp) +

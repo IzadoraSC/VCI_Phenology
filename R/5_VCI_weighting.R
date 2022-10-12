@@ -191,7 +191,8 @@ plot(WeightedVCI)
 writeRaster(WeightedVCI,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_WeightedVCI.tif"),
             format="GTiff",overwrite=T)
 
-# The weighted indices are then classified into five classes resulting in the following values for the final product:
+# The weighted indices are then classified into five classes resulting in the following values 
+# for the final product:
 
 #Output: five classes
 cWeightedVCI <- reclassify(WeightedVCI, c(-1, 10, 4,  10, 20, 3,  20, 30, 2, 30,40, 1,40,101,0))  
