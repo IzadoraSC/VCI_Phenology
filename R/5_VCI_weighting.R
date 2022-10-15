@@ -37,7 +37,8 @@ hemisphere <- 0
 # process all available years just comment the line with a #. In this example all 
 # data is used, thus the line is commented.
 
-AnalysisPeriod <- c(2001, 2002)
+# AnalysisPeriod <- c(2001, 2002)
+# remove(AnalysisPeriod)
 
 # Extract all Days of Year (DOY) and YEARs from the filenames. MODIS vegetation 
 # data consists of 16-day composites. The filename contains the year and Julian
@@ -52,13 +53,18 @@ YEARs <- unique(substr(basename(NDVIrasterData),35,38))
 length(YEARs)
 
 # List all VCI images.
-allVCI <- list.files(paste0(dataPath,'/VCI_CMNP/'), pattern=".tif$", recursive=F, full.names = T)
+allVCI <- list.files(paste0(dataPath,'VCI_CMNP/'), pattern=".tif$", recursive=F, full.names = T)
 
+# # List all VCI images.
+# allVCI <- list.files(paste0(dataPath,'/VCI_CMNP/'), pattern=".tif$", recursive=F, full.names = T)
+test <- list.files(paste0(dataPath,"timesat/"), pattern="_SoS.tif$", recursive=F, full.names = T)
 
+    
 #Load mean seasonality rasters.
 SoS <- as.integer(raster(paste0(dataPath,"/timesat/SOS-MEAN.tif")))
 PoS <- as.integer(raster(paste0(dataPath,"/timesat/POS-MEAN.tif")))
 EoS <- as.integer(raster(paste0(dataPath,"/timesat/EOS-MEAN.tif")))
+
 
 #Create an output folder for the final output named weighted.
 dir.create(paste0(dataPath,'/VCI_weighted'))
@@ -87,8 +93,6 @@ for (sy in min(as.numeric(YEARs)):max(as.numeric(YEARs))) {
     }
   }
 }
-
-
 
 # Stack all VCI for each year.
 yVCI <- stack(lyVCI)
