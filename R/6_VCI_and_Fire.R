@@ -105,29 +105,27 @@ dev.off(dev.list()["RStudioGD"])
 #attempt to clear all plots (suppress error if not plots exist)
 # try(dev.off(dev.list()["RStudioGD"]), silent=TRUE)  
 
-############
-# dscr <- '2015'
-# VCI_250m <- raster(x=paste0(pathData2,dscr,"_VCI_mean_reproj.tif")) # add the hazard map which is to be resampled
-# plot(VCI_250m)
-# 
-# fire_30m <- raster(paste0(pathData,"LS_pncm_",dscr,"_Reclas.tif"))
-# 
-# plot(fire_30m)
-# 
-# r2 <- raster::crop(fire_30m, extent(VCI_250m))  # crop the raster with VCI_250m
-# plot(r2)
-# 
-# VCI_resemp <- resample(VCI_250m, r2, method = "bilinear") # resample with nearest neighbour method to not loose category values
-# plot(VCI_resemp)
-# 
-# VCI_clip <-mask(VCI_resemp, cmnp) %>%  # clip the raster with the CMNP shapefile
-#   writeRaster(filename=paste0(dataPath,"/VCI_year/",dscr,"_VCI_resamp.tif"),
-#               format="GTiff", overwrite=T) 
-# plot(VCI_clip)
-# 
-# fire_30m_clip <- mask(r2, cmnp) %>%  # clip the raster with the CMNP shapefile
-#   writeRaster(filename=paste0(dataPath,"/Raster_Fire/","LS_pncm_",dscr,"_clip.tif"),
-#               format="GTiff", overwrite=T)
-# 
-# plot(fire_30m_clip)
+# The indices (VCI) are then classified into five classes resulting in the following values 
+# for the final product:
+
+#Output: five classes (based in https://www.un-spider.org/advisory-support/recommended-practices/recommended-practice-drought-monitoring/in-detail)
+# -1, 10, 4, -> Extreme Drought | correpoding Exceptional high fire risk
+# 10, 20, 3, -> Severe Drought | correpoding Extreme fire danger
+# 20, 30, 2, -> Moderate Drought | correpoding Fire risk very high
+# 30,40, 1, -> Light Drought | correpoding Fire risk is high
+# 40,101,0 -> No Drought () | correpoding Fire risk above average
+
+dscr3 <- as.numeric(c('2001', '2002', '2003', '2004', '2005', '2006', '2007', '2008',
+                      '2009', '2010', '2011', '2012', '2013', '2014', '2015', '2016',
+                      '2017', '2018', '2019', '2020', '2021'))
+
+for (i in 1:length(dscr3)) {
+  VCI_clip <- raster(x = paste0(pathData2, dscr3[i], "_VCI_resamp.tif"))
+  plot(VCI_clip)
+  
+  VCI_reclass <- reclassify(VCI_clip, c(-1, 10, 4,  10, 20, 3,  20, 30, 2, 30,40,1, 40,101,0)) %>% 
+    writeRaster(filename=paste0(dataPath,"/VCI_year/",dscr3[i],"_VCI_reclass.tif"),
+                format="GTiff", overwrite=T)
+  plot(VCI_reclass)
+}
 
