@@ -9,6 +9,7 @@ library(maps)
 library(mapdata)
 library(tmap)
 
+
 #insert link to the shapefile with the country borders
 
 border <- readOGR(dsn = path.expand("C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/shapefile"),
@@ -91,10 +92,6 @@ plot(exSeason, main = "Season - Chapada das Mesas National Park")
 
 plot(cmnp, bg="transparent", add=T )
 
-#https://github.com/EmilHvitfeldt/r-color-palettes
-
-tmaptools::palette_explorer()
-
 li <- tm_shape(cmnp) + tm_borders(lwd = 2, col = 'black')
 li
 
@@ -144,30 +141,109 @@ mapa_srtm_rio_claro_tmap <- tm_shape(geo_raster_srtm_rio_claro) +
 mapa_srtm_rio_claro_tmap
 
 
-########### VCI
-WeightedVCI <- list.files(path= "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/VCI_weighted",
-                          pattern='.tif$', recursive=F, ignore.case=T,
-                          full.names=T)
+########### MAP VCI
 
-VCI_ponder <- raster(WeightedVCI[5])
-VCI_ponder
+VCI_reclas <- list.files(path= "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/VCI_year",
+                         pattern='_reclass.tif$', recursive=F, ignore.case=T,
+                         full.names=T)
+
+VCI_plot <- raster(VCI_reclas[5])
+VCI_plot
+
+## Raster layers
+year2001 <- raster(VCI_reclas[1])
+year2010 <- raster(VCI_reclas[10])
+year2021 <- raster(VCI_reclas[21])
+
+# ## Raster stack
+# raster_stack <- raster::stack(year2001, year2010, year2021)
+# raster_stack
 
 # Mapa
 
-vci_2020_2021 <- tm_shape(VCI_ponder) + 
-  tm_raster(palette = terrain.colors(5), style = 'cont') + li +
-  tm_compass(position = c(.9, .08)) +
+vci_2001 <- tm_shape(year2001) + 
+  tm_raster(palette = terrain.colors(5), style = 'cat') + li +
+  tm_compass(position = c(.9, .80)) +   #north
   tm_scale_bar(text.size = .5, position = c(.02, 0)) +
   tm_graticules(lines = FALSE) +
-  tm_credits("CRS: WGS84/Geo", position = c(.02, .07)) +
+  tm_credits("SRC: WGS84/UTM Zone 23S", position = c(.02, .07)) +
   tm_layout(
     legend.title.color='white',
-    panel.labels = c("classified VCI 2020/2021"),
+    #title = "Classes VCI %",
+    #legend.frame = TRUE,
+    legend.position = c(.7, .5),
+    panel.labels = c("2001")
+  ) +
+  tm_add_legend (
+    col = terrain.colors(5),
+      #RColorBrewer::brewer.pal(5,"Spectral"),
+    labels = c('No Drought', 'Light Drought', 'Moderate Drought',
+               'Severe Drought', 'Extreme Drought'),
   ) +
   tm_facets(nrow = 1)
 
-vci_2020_2021
+vci_2001
+
+
+vci_2010 <- tm_shape(year2010) + 
+  tm_raster(palette = terrain.colors(5), style = 'cat') + li +
+  tm_compass(position = c(.9, .80)) +   #north
+  tm_scale_bar(text.size = .5, position = c(.02, 0)) +
+  tm_graticules(lines = FALSE) +
+  tm_credits("SRC: WGS84/UTM Zone 23S", position = c(.02, .07)) +
+  tm_layout(
+    legend.title.color='white',
+    #title = "Classes VCI %",
+    #legend.frame = TRUE,
+    legend.position = c(.7, .5),
+    panel.labels = c("2010")
+  ) +
+  tm_add_legend (
+    col = terrain.colors(5),
+    #RColorBrewer::brewer.pal(5,"Spectral"),
+    labels = c('No Drought', 'Light Drought', 'Moderate Drought',
+               'Severe Drought', 'Extreme Drought'),
+  ) +
+  tm_facets(nrow = 1)
+
+vci_2010
+
+
+vci_2021 <- tm_shape(year2021) + 
+  tm_raster(palette = terrain.colors(5), style = 'cat') + li +
+  tm_compass(position = c(.9, .80)) +   #north
+  tm_scale_bar(text.size = .5, position = c(.02, 0)) +
+  tm_graticules(lines = FALSE) +
+  tm_credits("SRC: WGS84/UTM Zone 23S", position = c(.02, .07)) +
+  tm_layout(
+    legend.title.color='white',
+    #title = "Classes VCI %",
+    #legend.frame = TRUE,
+    legend.position = c(.7, .5),
+    panel.labels = c("2021")
+  ) +
+  tm_add_legend (
+    col = terrain.colors(5),
+    #RColorBrewer::brewer.pal(5,"Spectral"),
+    labels = c('No Drought', 'Light Drought', 'Moderate Drought',
+               'Severe Drought', 'Extreme Drought'),
+  ) +
+  tm_facets(nrow = 1)
+
+vci_2021
+
+x <- tmap_arrange(vci_2001, vci_2010, vci_2021)
+
+getwd()
+
+# tmap::tmap_save(x, filename = "vci_2001-2021-2.svg",  width=1920, height=1080, dpi = 300)
+
 x11()
+
+# "RdYlBu" #inverse
+# "YlOrBr"
+# "YlOrRd"
+# "Zissou1"
 
 plot(VCI_ponder)
 plot(cmnp, bg="transparent", add=T, lwd = 2)
@@ -241,5 +317,110 @@ dem_matrix %>%
 
 
 
+#### MAP FIRE
+
+fire_clip <- list.files(path= "C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/Raster_Fire",
+                         pattern='_clip.tif$', recursive=F, ignore.case=T,
+                         full.names=T)
+
+fire_plot <- raster(fire_clip[5])
+fire_plot
+
+## Raster layers
+fyear2001 <- raster(fire_clip[1])
+fyear2010 <- raster(fire_clip[10])
+fyear2021 <- raster(fire_clip[21])
+
+library(wesanderson)
+names(wes_palettes)
+pal8 <- c('#FFFFFF', '#E25508')
+pal1 <- c('#E25508')
+
+# Mapa
+
+fire_2001 <- tm_shape(fyear2001) + 
+  tm_raster(pal = pal8, style = 'cat') + li +
+  tm_compass(position = c(.9, .80)) +   #north
+  tm_scale_bar(text.size = .5, position = c(.02, 0)) +
+  tm_graticules(lines = FALSE) +
+  tm_credits("SRC: WGS84/UTM Zone 23S", position = c(.02, .07)) +
+  tm_layout(
+    legend.title.color='white',
+    #title = "Classes VCI %",
+    #legend.frame = TRUE,
+    legend.position = c(.7, .5),
+    panel.labels = c("2001")
+  ) +
+  tm_add_legend(
+    col = pal8,
+      #RColorBrewer::brewer.pal("Spectral"),
+    labels = c('No Fire', 'Fire'),
+  ) +
+  tm_facets(nrow = 1)
+
+fire_2001
+
+
+
+fire_2010 <- tm_shape(fyear2010) + 
+  tm_raster(pal = pal8, style = 'cat') + li +
+  tm_compass(position = c(.9, .80)) +   #north
+  tm_scale_bar(text.size = .5, position = c(.02, 0)) +
+  tm_graticules(lines = FALSE) +
+  tm_credits("SRC: WGS84/UTM Zone 23S", position = c(.02, .07)) +
+  tm_layout(
+    legend.title.color='white',
+    #title = "Classes VCI %",
+    #legend.frame = TRUE,
+    legend.position = c(.7, .5),
+    panel.labels = c("2010")
+  ) +
+  tm_add_legend (
+    col = pal8,
+    #RColorBrewer::brewer.pal(5,"Spectral"),
+    # labels = c('No Drought', 'Light Drought', 'Moderate Drought',
+    #            'Severe Drought', 'Extreme Drought'),
+    labels = c('No Fire', 'Fire')
+  ) +
+  tm_facets(nrow = 1)
+
+fire_2010
+
+
+fire_2021 <- tm_shape(fyear2021) + 
+  tm_raster(pal = pal1, style = 'cat') + li +
+  tm_compass(position = c(.9, .80)) +   #north
+  tm_scale_bar(text.size = .5, position = c(.02, 0)) +
+  tm_graticules(lines = FALSE) +
+  tm_credits("SRC: WGS84/UTM Zone 23S", position = c(.02, .07)) +
+  tm_layout(
+    legend.title.color='white',
+    #title = "Classes VCI %",
+    #legend.frame = TRUE,
+    legend.position = c(.7, .5),
+    panel.labels = c("2021")
+  ) +
+  tm_add_legend (
+    col = pal1,
+    #RColorBrewer::brewer.pal(5,"Spectral"),
+    # labels = c('No Drought', 'Light Drought', 'Moderate Drought',
+    #            'Severe Drought', 'Extreme Drought'),
+    labels = c('No Fire', 'Fire')
+  ) +
+  tm_facets(nrow = 1)
+
+fire_2021
+
+x <- tmap_arrange(fire_2001, fire_2010, fire_2021)
+x
+x11()
+
 library(cols4all)
 cols4all::c4a_gui()
+
+
+#https://github.com/EmilHvitfeldt/r-color-palettes
+
+tmaptools::palette_explorer()
+
+#terrain.colors(5)

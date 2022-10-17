@@ -198,8 +198,14 @@ writeRaster(WeightedVCI,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_Weighte
 # The weighted indices are then classified into five classes resulting in the following values 
 # for the final product:
 
-#Output: five classes
-cWeightedVCI <- reclassify(WeightedVCI, c(-1, 10, 4,  10, 20, 3,  20, 30, 2, 30,40, 1,40,101,0))  
+#Output: five classes (based in https://www.un-spider.org/advisory-support/recommended-practices/recommended-practice-drought-monitoring/in-detail)
+# -1, 10, 4, -> Extreme Drought
+# 10, 20, 3, -> Severe Drought
+# 20, 30, 2, -> Moderate Drought
+# 30,40, 1, -> Light Drought
+# 40,101,0 -> No Drought
+
+cWeightedVCI <- reclassify(WeightedVCI, c(-1, 10, 4,  10, 20, 3,  20, 30, 2, 30,40,1, 40,101,0))  
 plot(cWeightedVCI)
 
 writeRaster(cWeightedVCI,filename=paste0(dataPath,"/VCI_weighted/",dscr,"_FiveCl.tif"),
