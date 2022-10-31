@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xml:lang="pt"><Esri><CreaDate>20221031</CreaDate><CreaTime>14195700</CreaTime><ArcGISFormat>1.0</ArcGISFormat><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process ToolSource="c:\program files (x86)\arcgis\desktop10.5\ArcToolbox\Toolboxes\Spatial Analyst Tools.tbx\RasterCalculator" Date="20221031" Time="141957">RasterCalculator ""Reclass_tif17" + "2015_VCI_reclass.tif"" C:\Users\Administrador\Documents\GitHub\VCI_Phenology\data\VCI_Fire\2015_VCI_Fire.tif</Process></lineage></DataProperties></Esri></metadata>

@@ -263,7 +263,7 @@ library(rayshader)
 
 ## Carregando DEM
 
-dem <- raster('E:/02_banco_de_dados/BD_elevacao/Alos_30m_clip.tif')
+dem <- raster('C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/DEM/Alos_30m_clip.tif')
 
 plot(dem)
 
@@ -282,13 +282,13 @@ dem_matrix %>%
   sphere_shade(texture = 'desert') %>%
   # add_water(detect_water(dem_matrix), color = 'desert') %>% 
   add_shadow(ray_shade(dem_matrix, zscale = 30)) %>% 
-  # add_shadow(ray_shade(dem_matrix, zscale = 3), 0.5) %>% 
-  # add_shadow(ambient_shade(dem_matrix), 0) %>% 
+  add_shadow(ray_shade(dem_matrix, zscale = 3), 0.5) %>%
+  add_shadow(ambient_shade(dem_matrix), 0) %>%
   plot_3d(dem_matrix, zscale = 10)
 # plot_3d(dem_matrix, zscale = 10, fov = 0, theta = 135,
 #         zoom = 0.75, phi = 45, windowsize = c(700,100))
 
-#render_snapshot()
+render_snapshot()
 
 
 
