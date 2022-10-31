@@ -10,4 +10,4 @@
 <img src="/image/october_2020.jpg" alt="VCI-Marth 2020 - CMNP - Dry Season" />
 
 ### Map VCI:
-<img src="/image/mapVCI_2001-2021.png" alt="VCI 2001-2021 - CMNP" />
+<img src="/image/mapVCI_2001-2021-ok2.svg" alt="VCI 2001-2021 - CMNP" />
