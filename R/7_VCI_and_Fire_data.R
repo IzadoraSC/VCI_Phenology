@@ -1069,24 +1069,54 @@ readr::write_csv(df.geral, "df_geral_VCI_Fire.csv")
 
 library(dplyr)
 
+df.geral.cqueima <- read.csv('C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/planilhas/df_geral_VCI_Fire_comqueima.csv',
+                             header = T, sep = ',', dec = '.')
+View(df.geral.cqueima)
 
-b3  <-  ggplot(df.geral, aes(x=as.factor(Year), y= as.numeric(km2), fill=Seca)) + 
+df.geral.squeima <- read.csv('C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/planilhas/df_geral_VCI_Fire_semqueima.csv',
+                             header = T, sep = ',', dec = '.')
+View(df.geral.squeima)
+
+df.geral.squeima$Seca <- as.factor(df.geral.squeima$Seca)
+df.geral.squeima$Seca = factor(df.geral.squeima$Seca, levels = c('Sem Seca', 'Seca Leve', 'Seca Moderada', 'Seca Severa', 'Seca Extrema'))
+
+library(ggplot2)
+b3  <-  ggplot(df.geral.squeima, aes(x=as.factor(Year), y= as.numeric(km2), fill=Seca)) + 
   geom_bar(position = position_dodge(), 
            stat="identity", width = 0.85, show.legend = NA, na.rm = T) +
-  facet_grid(Queima ~. ) +
-  ylab('Área (km2)') +  xlab('Ano') +
-  scale_y_continuous(breaks = seq(0,2000,200)) + 
+  # facet_grid(Queima ~. ) +
+  ylab('Área Total (km²)') +  xlab('Ano') +
+  scale_y_continuous(expand = c(0,0),breaks = seq(0,2000,200)) + 
   theme(panel.background = element_rect(fill = "white")) +
   theme(axis.line = element_line(colour = 'black', size = NULL, linetype = 'solid',
                                  lineend = NULL, color = NULL, arrow = NULL, inherit.blank = FALSE)) +
-  theme(axis.title.x = element_text(colour="black", size=22, face="bold")) +
-  theme(axis.title.y = element_text(colour="black", size=22, face="bold")) +
-  theme(axis.text = element_text(colour = "black", size = 18))+
+  theme(axis.title.x = element_text(colour="black", size=15, face="bold")) +
+  theme(axis.title.y = element_text(colour="black", size=15, face="bold")) +
+  theme(axis.text = element_text(colour = "black", size = 13))+
   #ggtitle("PNCM e Buffer (1990-2017)") +
   theme(plot.title = element_text(colour="black", size=25, face="bold"))
 
 b3
 
+df.geral.cqueima$Seca <- as.factor(df.geral.cqueima$Seca)
+df.geral.cqueima$Seca = factor(df.geral.cqueima$Seca, levels = c('Sem Seca', 'Seca Leve', 'Seca Moderada', 'Seca Severa', 'Seca Extrema'))
+
+b4  <-  ggplot(df.geral.cqueima, aes(x=as.factor(Year), y= as.numeric(km2), fill=Seca)) + 
+  geom_bar(position = position_dodge(), 
+           stat="identity", width = 0.85, show.legend = NA, na.rm = T) +
+  facet_grid(Queima ~. ) +
+  ylab('Área Total (km²)') +  xlab('Ano') +
+  scale_y_continuous(expand = c(0,0), breaks = seq(0,600,100)) + 
+  theme(panel.background = element_rect(fill = "white")) +
+  theme(axis.line = element_line(colour = 'black', size = NULL, linetype = 'solid',
+                                 lineend = NULL, color = NULL, arrow = NULL, inherit.blank = FALSE)) +
+  theme(axis.title.x = element_text(colour="black", size=15, face="bold")) +
+  theme(axis.title.y = element_text(colour="black", size=15, face="bold")) +
+  theme(axis.text = element_text(colour = "black", size = 13))+
+  #ggtitle("PNCM e Buffer (1990-2017)") +
+  theme(plot.title = element_text(colour="black", size=25, face="bold"))
+
+b4
 
 b3 <- ggplot(data = df.geral, aes(x=as.factor(Year))) + 
   geom_bar(mapping = aes(y= km2, fill="Queima"),

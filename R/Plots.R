@@ -177,8 +177,10 @@ vci_2001 <- tm_shape(year2001) +
   tm_add_legend (
     col = terrain.colors(5),
       #RColorBrewer::brewer.pal(5,"Spectral"),
-    labels = c('No Drought', 'Light Drought', 'Moderate Drought',
-               'Severe Drought', 'Extreme Drought'),
+    # labels = c('No Drought', 'Light Drought', 'Moderate Drought',
+    #            'Severe Drought', 'Extreme Drought'),
+    labels = c('Sem Seca', 'Seca Leve', 'Seca Moderada',
+               'Seca Severa', 'Seca Extrema'),
   ) +
   tm_facets(nrow = 1)
 
@@ -201,8 +203,10 @@ vci_2010 <- tm_shape(year2010) +
   tm_add_legend (
     col = terrain.colors(5),
     #RColorBrewer::brewer.pal(5,"Spectral"),
-    labels = c('No Drought', 'Light Drought', 'Moderate Drought',
-               'Severe Drought', 'Extreme Drought'),
+    # labels = c('No Drought', 'Light Drought', 'Moderate Drought',
+    #            'Severe Drought', 'Extreme Drought'),
+    labels = c('Sem Seca', 'Seca Leve', 'Seca Moderada',
+               'Seca Severa', 'Seca Extrema'),
   ) +
   tm_facets(nrow = 1)
 
@@ -225,15 +229,17 @@ vci_2021 <- tm_shape(year2021) +
   tm_add_legend (
     col = terrain.colors(5),
     #RColorBrewer::brewer.pal(5,"Spectral"),
-    labels = c('No Drought', 'Light Drought', 'Moderate Drought',
-               'Severe Drought', 'Extreme Drought'),
+    # labels = c('No Drought', 'Light Drought', 'Moderate Drought',
+    #            'Severe Drought', 'Extreme Drought'),
+    labels = c('Sem Seca', 'Seca Leve', 'Seca Moderada',
+               'Seca Severa', 'Seca Extrema'),
   ) +
   tm_facets(nrow = 1)
 
 vci_2021
 
 x <- tmap_arrange(vci_2001, vci_2010, vci_2021)
-
+x
 getwd()
 
 # tmap::tmap_save(x, filename = "vci_2001-2021-2.svg",  width=1920, height=1080, dpi = 300)
@@ -354,7 +360,8 @@ fire_2001 <- tm_shape(fyear2001) +
   tm_add_legend(
     col = pal8,
       #RColorBrewer::brewer.pal("Spectral"),
-    labels = c('No Fire', 'Fire'),
+    # labels = c('No Fire', 'Fire'),
+    labels = c('Sem queimada', 'Área queimada')
   ) +
   tm_facets(nrow = 1)
 
@@ -380,7 +387,8 @@ fire_2010 <- tm_shape(fyear2010) +
     #RColorBrewer::brewer.pal(5,"Spectral"),
     # labels = c('No Drought', 'Light Drought', 'Moderate Drought',
     #            'Severe Drought', 'Extreme Drought'),
-    labels = c('No Fire', 'Fire')
+    # labels = c('No Fire', 'Fire'),
+    labels = c('Sem queimada', 'Área queimada')
   ) +
   tm_facets(nrow = 1)
 
@@ -405,7 +413,8 @@ fire_2021 <- tm_shape(fyear2021) +
     #RColorBrewer::brewer.pal(5,"Spectral"),
     # labels = c('No Drought', 'Light Drought', 'Moderate Drought',
     #            'Severe Drought', 'Extreme Drought'),
-    labels = c('No Fire', 'Fire')
+    # labels = c('No Fire', 'Fire'),
+    labels = c('Sem queimada', 'Área queimada')
   ) +
   tm_facets(nrow = 1)
 

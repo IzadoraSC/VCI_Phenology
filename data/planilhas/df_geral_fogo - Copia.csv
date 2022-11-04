@@ -1,0 +1,7 @@
+VCI %;Risco de Seca;Risco de Fogo
+0-10;Seca Extrema; Risco de incêndio extremamente alto
+10-20;Seca Severa;Risco de incêndio extremo
+20-30;Seca Moderada;Risco de incêndio muito alto
+30-40;Seca Leve;Risco de incêndio alto
+40-100;Sem Seca;Risco de incêndio acima da média
+;;
