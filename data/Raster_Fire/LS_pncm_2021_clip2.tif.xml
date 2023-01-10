@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xml:lang="pt"><Esri><CreaDate>20221104</CreaDate><CreaTime>21055500</CreaTime><ArcGISFormat>1.0</ArcGISFormat><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process ToolSource="c:\program files (x86)\arcgis\desktop10.5\ArcToolbox\Toolboxes\Spatial Analyst Tools.tbx\Reclassify" Date="20221104" Time="210555">Reclassify LS_pncm_2021_clip.tif VALUE "1 1;NODATA 0" C:\Users\Administrador\Documents\GitHub\VCI_Phenology\data\Raster_Fire\LS_pncm_2021_clip2.tif DATA</Process></lineage></DataProperties></Esri></metadata>

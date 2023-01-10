@@ -1,3 +1,9 @@
+#Carregando pacotes
+library(tidyverse)
+library(ggplot2)
+library(readr)
+library(dplyr)
+
 list_table <- readxl::read_xlsx('C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/Raster_Fire/LS_pncm_2018_clip.xlsx')
 
 as.data.frame(list_table)
@@ -131,8 +137,6 @@ df.2018$km2 <- df.2018$m2 * 0.000001
 df.2018$Fire <- c('Sem fogo', 'Fogo')
 df.2018$Year <- c('2018')
 as.data.frame(df.2018)
-
-library(tidyverse)
 
 df.2019 <- list_table
 df.2019 <- dplyr::add_row(df.2019,
@@ -497,7 +501,6 @@ readr::write_csv(df.geral, "df_geral_VCI.csv")
 
 df.geral.seca <- df.geral[-c(1:21),]
 
-library(ggplot2)
 
 ###Mudar name levels
 df.geral$Fire <- revalue(df.geral$Fire, c("before"="Before", "after"="After"))
@@ -1061,13 +1064,13 @@ df_list <- list(df.2001, df.2002, df.2003, df.2004, df.2005, df.2006, df.2007,
                 df.2008, df.2009, df.2010, df.2011, df.2012, df.2012, df.2013,
                 df.2014, df.2015, df.2015, df.2016, df.2017, df.2018, df.2019,
                 df.2020, df.2021)
-#merge all data frames in 
+
+#merge all data frames
 
 df.geral <- Reduce(function(x, y) merge(x, y, all=TRUE), df_list) 
-library(readr)
+
 readr::write_csv(df.geral, "df_geral_VCI_Fire.csv")
 
-library(dplyr)
 
 df.geral.cqueima <- read.csv('C:/Users/Administrador/Documents/GitHub/VCI_Phenology/data/planilhas/df_geral_VCI_Fire_comqueima.csv',
                              header = T, sep = ',', dec = '.')
@@ -1084,9 +1087,9 @@ library(ggplot2)
 b3  <-  ggplot(df.geral.squeima, aes(x=as.factor(Year), y= as.numeric(km2), fill=Seca)) + 
   geom_bar(position = position_dodge(), 
            stat="identity", width = 0.85, show.legend = NA, na.rm = T) +
-  # facet_grid(Queima ~. ) +
+  facet_grid(Queima ~. ) +
   ylab('Área Total (km²)') +  xlab('Ano') +
-  scale_y_continuous(expand = c(0,0),breaks = seq(0,2000,200)) + 
+  scale_y_continuous(expand = c(0,0), breaks = seq(0,1600,200)) + 
   theme(panel.background = element_rect(fill = "white")) +
   theme(axis.line = element_line(colour = 'black', size = NULL, linetype = 'solid',
                                  lineend = NULL, color = NULL, arrow = NULL, inherit.blank = FALSE)) +
@@ -1095,6 +1098,7 @@ b3  <-  ggplot(df.geral.squeima, aes(x=as.factor(Year), y= as.numeric(km2), fill
   theme(axis.text = element_text(colour = "black", size = 13))+
   #ggtitle("PNCM e Buffer (1990-2017)") +
   theme(plot.title = element_text(colour="black", size=25, face="bold"))
+
 
 b3
 
