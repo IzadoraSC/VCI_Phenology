@@ -1,0 +1,106 @@
+value;count;m2;km2;Seca;Fire;Queima;Year
+20;109093;98183700;98,1837;Sem Seca;Risco de incêndio acima da média;Com Queimada;2021
+20;138919;125027100;125,02709999999999;Sem Seca;Risco de incêndio acima da média;Com Queimada;2018
+20;194814;175332600;175,33259999999999;Sem Seca;Risco de incêndio acima da média;Com Queimada;2019
+20;196830;177147000;177,147;Sem Seca;Risco de incêndio acima da média;Com Queimada;2017
+20;258089;232280100;232,28009999999998;Sem Seca;Risco de incêndio acima da média;Com Queimada;2007
+20;260061;234054900;234,0549;Sem Seca;Risco de incêndio acima da média;Com Queimada;2005
+20;272996;245696400;245,69639999999998;Sem Seca;Risco de incêndio acima da média;Com Queimada;2006
+20;289209;260288100;260,2881;Sem Seca;Risco de incêndio acima da média;Com Queimada;2008
+20;312176;280958400;280,9584;Sem Seca;Risco de incêndio acima da média;Com Queimada;2004
+20;336445;302800500;302,8005;Sem Seca;Risco de incêndio acima da média;Com Queimada;2003
+20;340542;306487800;306,4878;Sem Seca;Risco de incêndio acima da média;Com Queimada;2011
+20;363310;326979000;326,979;Sem Seca;Risco de incêndio acima da média;Com Queimada;2016
+20;394677;355209300;355,2093;Sem Seca;Risco de incêndio acima da média;Com Queimada;2015
+20;400873;360785700;360,78569999999996;Sem Seca;Risco de incêndio acima da média;Com Queimada;2001
+20;416143;374528700;374,52869999999996;Sem Seca;Risco de incêndio acima da média;Com Queimada;2020
+20;437998;394198200;394,1982;Sem Seca;Risco de incêndio acima da média;Com Queimada;2009
+20;439504;395553600;395,55359999999996;Sem Seca;Risco de incêndio acima da média;Com Queimada;2013
+20;491328;442195200;442,1952;Sem Seca;Risco de incêndio acima da média;Com Queimada;2012
+20;512850;461565000;461,565;Sem Seca;Risco de incêndio acima da média;Com Queimada;2014
+20;596566;536909400;536,9094;Sem Seca;Risco de incêndio acima da média;Com Queimada;2002
+20;612227;551004300;551,0043;Sem Seca;Risco de incêndio acima da média;Com Queimada;2010
+21;554;498600;0,4986;Seca Leve;Risco de incêndio alto;Com Queimada;2019
+21;1654;1488600;1,4886;Seca Leve;Risco de incêndio alto;Com Queimada;2021
+21;7110;6399000;6,399;Seca Leve;Risco de incêndio alto;Com Queimada;2013
+21;7308;6577200;6,5771999999999995;Seca Leve;Risco de incêndio alto;Com Queimada;2018
+21;13690;12321000;12,321;Seca Leve;Risco de incêndio alto;Com Queimada;2020
+21;14472;13024800;13,024799999999999;Seca Leve;Risco de incêndio alto;Com Queimada;2009
+21;22850;20565000;20,564999999999998;Seca Leve;Risco de incêndio alto;Com Queimada;2016
+21;46541;41886900;41,8869;Seca Leve;Risco de incêndio alto;Com Queimada;2011
+21;50066;45059400;45,0594;Seca Leve;Risco de incêndio alto;Com Queimada;2014
+21;80066;72059400;72,0594;Seca Leve;Risco de incêndio alto;Com Queimada;2017
+21;88947;80052300;80,0523;Seca Leve;Risco de incêndio alto;Com Queimada;2012
+21;111002;99901800;99,9018;Seca Leve;Risco de incêndio alto;Com Queimada;2015
+21;117562;105805800;105,80579999999999;Seca Leve;Risco de incêndio alto;Com Queimada;2002
+21;142709;128438100;128,4381;Seca Leve;Risco de incêndio alto;Com Queimada;2006
+21;157673;141905700;141,9057;Seca Leve;Risco de incêndio alto;Com Queimada;2004
+21;162443;146198700;146,1987;Seca Leve;Risco de incêndio alto;Com Queimada;2007
+21;183129;164816100;164,8161;Seca Leve;Risco de incêndio alto;Com Queimada;2008
+21;187839;169055100;169,05509999999998;Seca Leve;Risco de incêndio alto;Com Queimada;2003
+21;251524;226371600;226,3716;Seca Leve;Risco de incêndio alto;Com Queimada;2001
+21;273956;246560400;246,5604;Seca Leve;Risco de incêndio alto;Com Queimada;2010
+21;275207;247686300;247,6863;Seca Leve;Risco de incêndio alto;Com Queimada;2005
+22;6;5400;0,005399999999999999;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2019
+22;60;54000;0,054;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2021
+22;229;206100;0,20609999999999998;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2018
+22;233;209700;0,2097;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2009
+22;279;251100;0,2511;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2013
+22;620;558000;0,5579999999999999;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2016
+22;1137;1023300;1,0232999999999999;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2014
+22;1241;1116900;1,1169;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2020
+22;2507;2256300;2,2563;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2011
+22;10883;9794700;9,794699999999999;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2012
+22;13939;12545100;12,5451;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2017
+22;14566;13109400;13,109399999999999;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2002
+22;19775;17797500;17,7975;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2007
+22;23344;21009600;21,0096;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2006
+22;33357;30021300;30,0213;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2015
+22;33921;30528900;30,5289;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2010
+22;36265;32638500;32,6385;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2004
+22;42284;38055600;38,0556;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2008
+22;47155;42439500;42,439499999999995;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2003
+22;54451;49005900;49,0059;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2001
+22;79670;71703000;71,703;Seca Moderada;Risco de incêndio muito alto;Com Queimada;2005
+23;0;0;0;Seca Severa;Risco de incêndio extremo;Com Queimada;2009
+23;0;0;0;Seca Severa;Risco de incêndio extremo;Com Queimada;2011
+23;0;0;0;Seca Severa;Risco de incêndio extremo;Com Queimada;2013
+23;0;0;0;Seca Severa;Risco de incêndio extremo;Com Queimada;2018
+23;0;0;0;Seca Severa;Risco de incêndio extremo;Com Queimada;2019
+23;0;0;0;Seca Severa;Risco de incêndio extremo;Com Queimada;2021
+23;4;3600;0,0036;Seca Severa;Risco de incêndio extremo;Com Queimada;2020
+23;33;29700;0,029699999999999997;Seca Severa;Risco de incêndio extremo;Com Queimada;2014
+23;46;41400;0,0414;Seca Severa;Risco de incêndio extremo;Com Queimada;2012
+23;129;116100;0,1161;Seca Severa;Risco de incêndio extremo;Com Queimada;2017
+23;197;177300;0,17729999999999999;Seca Severa;Risco de incêndio extremo;Com Queimada;2016
+23;698;628200;0,6282;Seca Severa;Risco de incêndio extremo;Com Queimada;2010
+23;706;635400;0,6354;Seca Severa;Risco de incêndio extremo;Com Queimada;2002
+23;955;859500;0,8594999999999999;Seca Severa;Risco de incêndio extremo;Com Queimada;2006
+23;979;881100;0,8811;Seca Severa;Risco de incêndio extremo;Com Queimada;2003
+23;1058;952200;0,9521999999999999;Seca Severa;Risco de incêndio extremo;Com Queimada;2004
+23;1576;1418400;1,4183999999999999;Seca Severa;Risco de incêndio extremo;Com Queimada;2007
+23;1679;1511100;1,5110999999999999;Seca Severa;Risco de incêndio extremo;Com Queimada;2015
+23;2072;1864800;1,8648;Seca Severa;Risco de incêndio extremo;Com Queimada;2005
+23;2405;2164500;2,1645;Seca Severa;Risco de incêndio extremo;Com Queimada;2008
+23;3876;3488400;3,4884;Seca Severa;Risco de incêndio extremo;Com Queimada;2001
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2001
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2003
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2004
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2006
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2007
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2009
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2010
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2011
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2012
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2013
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2014
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2015
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2016
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2017
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2018
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2019
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2020
+24;0;0;0;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2021
+24;1;900;9e-4;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2005
+24;2;1800;0,0018;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2002
+24;19;17100;0,0171;Seca Extrema;Risco de incêndio extremamente alto;Com Queimada;2008
